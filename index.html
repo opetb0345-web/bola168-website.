@@ -41,25 +41,70 @@ main{max-width:1160px;margin:26px auto;padding:0 20px}
 .league{font-size:11px;color:#9eb1ca;margin-bottom:4px}
 .empty{text-align:center;padding:30px 12px;color:var(--muted)}
 .error{color:#ffb7a8}
+.social{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.social a{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:145px;text-decoration:none;color:#fff;font-weight:900;letter-spacing:.2px;padding:13px 18px;border-radius:13px;border:1px solid #f5c451;background:linear-gradient(135deg,#173e70 0%,#0a1b35 58%,#102b50 100%);box-shadow:0 0 7px #f5c45188,0 0 17px #247bd477,inset 0 1px 0 #ffffff26;transition:transform .2s,box-shadow .2s,border-color .2s}
+.social a:before{content:"";position:absolute;inset:3px;border:1px solid #f5c45155;border-radius:9px;pointer-events:none;z-index:-1}
+.social a:hover{transform:translateY(-3px);border-color:#ffdf83;box-shadow:0 0 10px #ffdf83,0 0 25px #287edb,0 0 38px #f5c45155,inset 0 1px 0 #ffffff40}
+.social .wa,.social .tt,.social .ig,.social .fb{border-color:#f5c451;color:#fff;text-shadow:0 0 8px #9ccfff55}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field label{display:block;color:#d9e5f5;font-size:12px;font-weight:700;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #365174;border-radius:9px;background:#07172e;color:#fff;font:inherit}
+.field textarea{min-height:76px;resize:vertical}
+.prediction{border:1px solid rgba(245,196,81,.2);border-radius:12px;padding:14px;margin-top:12px;background:#07172e}
+.prediction h3{margin:0 0 5px;color:var(--gold2);font-size:16px}
+.delete{background:#5b2630;color:#fff;border:1px solid #a94a58;border-radius:8px;padding:7px 11px;cursor:pointer}
 .footer{text-align:center;color:#8395ae;font-size:12px;padding:28px 10px 38px}
-@media(max-width:650px){.wrap{padding:12px 14px}main{padding:0 13px;margin:17px auto}.hero{min-height:270px;background-position:62% center}.hero-content{padding:25px 20px;max-width:88%}.hero p{max-width:310px}.match{gap:7px}.team{font-size:12px;overflow-wrap:anywhere}.score{min-width:66px;font-size:18px}.card{padding:14px}}
+@media(max-width:650px){.wrap{padding:12px 14px}main{padding:0 13px;margin:17px auto}.hero{min-height:270px;background-position:62% center}.hero-content{padding:25px 20px;max-width:88%}.hero p{max-width:310px}.match{gap:7px}.team{font-size:12px;overflow-wrap:anywhere}.score{min-width:66px;font-size:18px}.card{padding:14px}.form-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header><div class="wrap">
- <div class="brand"><div class="logo">B</div><div><h1>BOLA168</h1><div class="sub">BG OPET • LIVE SCORE • FIXTURES • H2H</div></div></div>
- <nav><button class="tab active" data-view="live">Live Score</button><button class="tab" data-view="today">Hari Ini</button><button class="tab" data-view="upcoming">Jadwal</button></nav>
+ <div class="brand"><div class="logo">B</div><div><h1>BOLA168</h1><div class="sub">BG OPET • LIVE SCORE • FIXTURES • PREDIKSI</div></div></div>
+ <nav>
+  <button class="tab active" data-view="live">Live Score</button>
+  <button class="tab" data-view="today">Hari Ini</button>
+  <button class="tab" data-view="upcoming">Jadwal</button>
+  <button class="tab" data-view="predictions">⚡ Prediksi Saya</button>
+ </nav>
 </div></header>
 <main>
  <section class="hero"><div class="hero-content">
   <div class="eyebrow">WELCOME TO BOLA168</div>
   <h2>RASAKAN SERUNYA<br>SEPAK BOLA</h2>
-  <p>Update skor langsung, pertandingan hari ini, dan jadwal sepak bola dalam satu tempat.</p>
+  <p>Update skor langsung, pertandingan hari ini, jadwal sepak bola, dan prediksi pilihan BG OPET.</p>
   <button class="btn" id="refresh">↻ &nbsp; Perbarui Skor</button>
  </div></section>
  <section class="card">
+  <div class="card-title">IKUTI SOSIAL MEDIA KAMI</div>
+  <p class="muted">Terhubung dengan BG OPET melalui media sosial resmi.</p>
+  <div class="social">
+   <a class="wa" href="https://wa.me/6285926559500" target="_blank" rel="noopener">☏ WhatsApp</a>
+   <a class="tt" href="https://www.tiktok.com/@bg.opet00?_r=1&_t=ZS-9BbNFfqhRuG" target="_blank" rel="noopener">♫ TikTok</a>
+   <a class="ig" href="https://www.instagram.com/opetb0345/" target="_blank" rel="noopener">◎ Instagram</a>
+   <a class="fb" href="https://www.facebook.com/share/1D2zTETeoR/" target="_blank" rel="noopener">f Facebook</a>
+  </div>
+ </section>
+ <section class="card" id="matchesCard">
   <div class="row"><strong class="card-title" id="sectionTitle">Pertandingan Sedang Berlangsung</strong><span class="muted" id="updated">Memuat data…</span></div>
   <div id="matches"><div class="empty">Sedang mengambil data pertandingan…</div></div>
+ </section>
+ <section class="card" id="predictionsCard" hidden>
+  <div class="card-title">⚡ PREDIKSI SAYA</div>
+  <p class="muted">Tambahkan prediksi pilihan BG OPET. Prediksi tersimpan di browser/perangkat ini.</p>
+  <form id="predictionForm">
+   <div class="form-grid">
+    <div class="field"><label for="predDate">Tanggal pertandingan</label><input id="predDate" type="date" required></div>
+    <div class="field"><label for="predLeague">Liga / Kompetisi</label><input id="predLeague" placeholder="Contoh: Liga Inggris" required></div>
+    <div class="field"><label for="homeTeam">Tim kandang</label><input id="homeTeam" placeholder="Nama tim kandang" required></div>
+    <div class="field"><label for="awayTeam">Tim tandang</label><input id="awayTeam" placeholder="Nama tim tandang" required></div>
+    <div class="field"><label for="predPick">Pilihan prediksi</label><select id="predPick"><option value="1">1 — Tim kandang menang</option><option value="X">X — Seri</option><option value="2">2 — Tim tandang menang</option><option value="Over 2.5">Over 2.5 gol</option><option value="Under 2.5">Under 2.5 gol</option><option value="BTTS">Kedua tim mencetak gol</option></select></div>
+    <div class="field"><label for="predScore">Prediksi skor (opsional)</label><input id="predScore" placeholder="Contoh: 2-1"></div>
+    <div class="field" style="grid-column:1/-1"><label for="predNotes">Analisis / catatan (opsional)</label><textarea id="predNotes" placeholder="Tulis alasan atau analisis prediksi..."></textarea></div>
+   </div>
+   <p><button class="btn" type="submit">⚡ SIMPAN PREDIKSI</button></p>
+  </form>
+  <div class="card-title" style="margin-top:20px">Daftar Prediksi</div>
+  <div id="predictionList"><div class="empty">Belum ada prediksi. Silakan tambahkan prediksi pertama.</div></div>
  </section>
  <section class="card"><div class="card-title">HEAD TO HEAD</div><p class="muted">Data Head to Head tersedia melalui layanan pertandingan BOLA168. Tampilan pemilih H2H akan ditambahkan pada pembaruan berikutnya.</p></section>
  <div class="footer">© BOLA168 • BG OPET • Data pertandingan disediakan oleh API-Football. Ketersediaan liga dan statistik mengikuti paket API.</div>
@@ -75,19 +120,47 @@ function render(rows){
  $('matches').innerHTML=rows.map(f=>`<div class="match"><div><div class="league">${safe(f.league?.name||'Pertandingan')}</div><div class="team">${safe(f.teams?.home?.name)}</div></div><div class="score">${f.goals?.home??'-'} : ${f.goals?.away??'-'}<span class="status">${safe(fmtStatus(f))}</span></div><div class="team">${safe(f.teams?.away?.name)}</div></div>`).join('');
 }
 async function load(){
+ if(view==='predictions')return;
  $('matches').innerHTML='<div class="empty">Memuat skor…</div>';
  $('updated').textContent='Memuat…';
  try{
   const endpoint=view==='live'?'/api/football?live=all':`/api/football?date=${dateLocal()}${view==='upcoming'?'&next=1':''}`;
   const r=await fetch(endpoint);const j=await r.json();
   if(!r.ok)throw new Error(j.message||j.error||`HTTP ${r.status}`);
+  if(j.errors&&Object.keys(j.errors).length)throw new Error(typeof j.errors==='string'?j.errors:JSON.stringify(j.errors));
   let rows=j.response||[];
   if(view==='live')rows=rows.filter(x=>!['NS','FT','AET','PEN'].includes(x.fixture?.status?.short));
   else if(view==='upcoming')rows=rows.filter(x=>x.fixture?.status?.short==='NS');
   render(rows);$('updated').textContent='Diperbarui '+new Date().toLocaleTimeString('id-ID');
- }catch(e){$('matches').innerHTML=`<div class="empty error">Data belum dapat dimuat: ${safe(e.message)}<br>Pastikan API_FOOTBALL_KEY sudah dipasang di Netlify dan fungsi berhasil di-deploy.</div>`;$('updated').textContent='Gagal memuat'}
+ }catch(e){$('matches').innerHTML=`<div class="empty error">Data belum dapat dimuat: ${safe(e.message)}<br>Periksa fungsi Netlify dan kuota API-Football.</div>`;$('updated').textContent='Gagal memuat'}
 }
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');view=b.dataset.view;$('sectionTitle').textContent=view==='live'?'Pertandingan Sedang Berlangsung':view==='today'?'Pertandingan Hari Ini':'Jadwal Mendatang';load()}));
-$('refresh').addEventListener('click',load);load();setInterval(load,60000);
+function getPredictions(){try{return JSON.parse(localStorage.getItem('bola168_predictions')||'[]')}catch(e){return []}}
+function savePredictions(items){localStorage.setItem('bola168_predictions',JSON.stringify(items))}
+function showPredictions(){
+ const items=getPredictions();
+ if(!items.length){$('predictionList').innerHTML='<div class="empty">Belum ada prediksi. Silakan tambahkan prediksi pertama.</div>';return}
+ $('predictionList').innerHTML=items.map((p,i)=>`<article class="prediction"><div class="row"><h3>${safe(p.home)} vs ${safe(p.away)}</h3><button class="delete" data-delete="${i}" type="button">Hapus</button></div><div class="muted">${safe(p.date)} • ${safe(p.league)}</div><p><strong>Prediksi:</strong> ${safe(p.pick)}${p.score?' • <strong>Skor:</strong> '+safe(p.score):''}</p>${p.notes?`<p>${safe(p.notes)}</p>`:''}</article>`).join('');
+ document.querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>{const arr=getPredictions();arr.splice(Number(b.dataset.delete),1);savePredictions(arr);showPredictions()}));
+}
+$('predictionForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const item={date:$('predDate').value,league:$('predLeague').value.trim(),home:$('homeTeam').value.trim(),away:$('awayTeam').value.trim(),pick:$('predPick').value,score:$('predScore').value.trim(),notes:$('predNotes').value.trim()};
+ const items=getPredictions();items.unshift(item);savePredictions(items);$('predictionForm').reset();$('predDate').value=dateLocal();showPredictions();
+});
+function switchView(next){
+ view=next;
+ document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view===view));
+ const isPred=view==='predictions';
+ $('matchesCard').hidden=isPred;
+ $('predictionsCard').hidden=!isPred;
+ $('refresh').hidden=isPred;
+ if(isPred){$('sectionTitle').textContent='Prediksi Saya';$('updated').textContent='';showPredictions()}
+ else{$('sectionTitle').textContent=view==='live'?'Pertandingan Sedang Berlangsung':view==='today'?'Pertandingan Hari Ini':'Jadwal Mendatang';load()}
+}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
+$('refresh').addEventListener('click',load);
+$('predDate').value=dateLocal();
+load();
+setInterval(()=>{if(view!=='predictions')load()},300000);
 </script>
 </body></html>
