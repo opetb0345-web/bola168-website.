@@ -3,83 +3,109 @@ exports.handler = async (event) => {
   const key = process.env.API_FOOTBALL_KEY;
 
   if (!key) {
-    return json(503, {
-      error: "API_FOOTBALL_KEY belum dipasang di Netlify."
-    });
+    return json(503, { error: "API key belum dipasang." });
   }
 
   const q = event.queryStringParameters || {};
-  const params = new URLSearchParams();
-  let endpoint = "fixtures";
+  const headers = { "x-apisports-key": key };
 
-  // Pencarian klub
-  if (q.teams) {
-    endpoint = "teams";
-    params.set("search", q.teams);
-  }
-
-  // Head to Head
-  else if (q.h2h) {
-    params.set("h2h", q.h2h);
-    params.set("last", "10");
-  }
-
-  // Pertandingan lainnya
-  else {
-    if (q.live === "all") {
-      params.set("live", "all");
+  try {
+    // Pencarian klub
+    if (q.teams) {
+      return await request("teams", { search: q.teams });
     }
 
-    // Jadwal mendatang: 7 hari ke depan
-    else if (q.next === "1") {
-      const start = new Date();
-      const end = new Date();
-      end.setDate(end.getDate() + 7);
+    // Head to Head
+    if (q.h2h) {
+      return await request("fixtures", {
+        h2h: q.h2h,
+        last: "10"
+      });
+    }
 
-      const formatDate = (date) =>
-        date.toISOString().slice(0, 10);
+    // Live Score
+    if (q.live === "all") {
+      return await request("fixtures", { live: "all" });
+    }
 
-      params.set("from", formatDate(start));
-      params.set("to", formatDate(end));
-      params.set("status", "NS");
+    // Jadwal 3 hari ke depan
+    if (q.next === "1") {
+      const dates = [];
+      const jakartaDate = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Jakarta",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).format(new Date());
+
+      const start = new Date(jakartaDate + "T00:00:00Z");
+
+      for (let i = 1; i <= 3; i++) {
+        const date = new Date(start);
+        date.setUTCDate(date.getUTCDate() + i);
+        dates.push(date.toISOString().slice(0, 10));
+      }
+
+      const results = await Promise.all(
+        dates.map(date => requestBody("fixtures", { date }))
+      );
+
+      const matches = results.flatMap(result =>
+        result.response || []
+      ).filter(match =>
+        match.fixture &&
+        ["NS", "TBD"].includes(match.fixture.status.short)
+      );
+
+      return json(200, {
+        get: "fixtures",
+        parameters: { dates },
+        results: matches.length,
+        response: matches
+      }, 300);
     }
 
     // Jadwal berdasarkan tanggal
-    else {
-      params.set(
-        "date",
-        q.date || new Date().toISOString().slice(0, 10)
-      );
-    }
-  }
-
-  try {
-    const response = await fetch(
-      "https://v3.football.api-sports.io/" +
-      endpoint + "?" + params.toString(),
-      {
-        headers: {
-          "x-apisports-key": key
-        }
-      }
-    );
-
-    const body = await response.json();
-    return json(response.status, body);
+    return await request("fixtures", {
+      date: q.date || new Date().toISOString().slice(0, 10)
+    });
 
   } catch (error) {
     return json(502, {
-      error: "Tidak dapat mengambil data dari API-Football."
+      error: "Gagal mengambil data pertandingan."
     });
+  }
+
+  async function request(endpoint, params) {
+    const body = await requestBody(endpoint, params);
+    return json(200, body, 60);
+  }
+
+  async function requestBody(endpoint, params) {
+    const query = new URLSearchParams(params);
+
+    const response = await fetch(
+      "https://v3.football.api-sports.io/" +
+      endpoint + "?" + query.toString(),
+      { headers }
+    );
+
+    const body = await response.json();
+
+    if (!response.ok || (body.errors && Object.keys(body.errors).length)) {
+      throw new Error("API-Football error");
+    }
+
+    return body;
   }
 };
 
-function json(statusCode, body) {
+function json(statusCode, body, cache = 60) {
   return {
     statusCode,
     headers: {
       "content-type": "application/json",
-      "cache-control": "public, max-age=60"
+      "cache-control": `public, max-age=${cache}`
     },
     body: JSON.stringify(body)
   };
