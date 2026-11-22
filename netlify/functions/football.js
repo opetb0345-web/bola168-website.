@@ -29,7 +29,7 @@ exports.handler = async (event) => {
     }
 
     // Jadwal 3 hari ke depan
-    if (q.next === "1") {
+    if (q.next) {
       const dates = [];
       const jakartaDate = new Intl.DateTimeFormat("en-CA", {
         timeZone: "Asia/Jakarta",
