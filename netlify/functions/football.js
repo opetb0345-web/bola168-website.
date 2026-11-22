@@ -1,5 +1,4 @@
 
-// Netlify Function: proxy API-Football tanpa membuka API key di browser.
 exports.handler = async (event) => {
   const key = process.env.API_FOOTBALL_KEY;
 
@@ -13,7 +12,7 @@ exports.handler = async (event) => {
   const params = new URLSearchParams();
   let endpoint = "fixtures";
 
-  // Pencarian klub berdasarkan nama
+  // Pencarian klub
   if (q.teams) {
     endpoint = "teams";
     params.set("search", q.teams);
@@ -25,18 +24,32 @@ exports.handler = async (event) => {
     params.set("last", "10");
   }
 
-  // Live Score dan jadwal pertandingan
+  // Pertandingan lainnya
   else {
     if (q.live === "all") {
       params.set("live", "all");
-    } else if (q.date) {
-      params.set("date", q.date);
-    } else {
-      params.set("date", new Date().toISOString().slice(0, 10));
     }
 
-    if (q.next === "1") {
-      params.set("next", "10");
+    // Jadwal mendatang: 7 hari ke depan
+    else if (q.next === "1") {
+      const start = new Date();
+      const end = new Date();
+      end.setDate(end.getDate() + 7);
+
+      const formatDate = (date) =>
+        date.toISOString().slice(0, 10);
+
+      params.set("from", formatDate(start));
+      params.set("to", formatDate(end));
+      params.set("status", "NS");
+    }
+
+    // Jadwal berdasarkan tanggal
+    else {
+      params.set(
+        "date",
+        q.date || new Date().toISOString().slice(0, 10)
+      );
     }
   }
 
@@ -54,7 +67,7 @@ exports.handler = async (event) => {
     const body = await response.json();
     return json(response.status, body);
 
-  } catch (e) {
+  } catch (error) {
     return json(502, {
       error: "Tidak dapat mengambil data dari API-Football."
     });
@@ -66,7 +79,7 @@ function json(statusCode, body) {
     statusCode,
     headers: {
       "content-type": "application/json",
-      "cache-control": "public, max-age=30"
+      "cache-control": "public, max-age=60"
     },
     body: JSON.stringify(body)
   };
