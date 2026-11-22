@@ -6,3 +6,12 @@
   from = "/api/football"
   to = "/.netlify/functions/football"
   status = 200
+[[redirects]]
+  from = "/api/predictions"
+  to = "/.netlify/functions/prediction-gallery"
+  status = 200
+
+[[redirects]]
+  from = "/api/predictions-sign"
+  to = "/.netlify/functions/prediction-sign"
+  status = 200
