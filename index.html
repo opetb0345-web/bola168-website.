@@ -89,4 +89,148 @@ function showPredictions(){const items=getPredictions();if(!items.length){$('pre
 $('predictionForm').addEventListener('submit',e=>{e.preventDefault();const item={date:$('predDate').value,league:$('predLeague').value.trim(),home:$('homeTeam').value.trim(),away:$('awayTeam').value.trim(),pick:$('predPick').value,score:$('predScore').value.trim(),notes:$('predNotes').value.trim()};const items=getPredictions();items.unshift(item);savePredictions(items);$('predictionForm').reset();$('predDate').value=dateLocal();showPredictions()});
 function switchView(next){view=next;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view===view));const isPred=view==='predictions';$('matchesCard').hidden=isPred;$('predictionsCard').hidden=!isPred;$('refresh').hidden=isPred;if(isPred){$('sectionTitle').textContent='Prediksi Saya';$('updated').textContent='';showPredictions()}else{$('sectionTitle').textContent=view==='live'?'Pertandingan Sedang Berlangsung':view==='today'?'Pertandingan Hari Ini':'Jadwal Mendatang';load()}}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));$('refresh').addEventListener('click',load);$('h2hSearch').addEventListener('click',searchH2H);setupTeamSearch('home');setupTeamSearch('away');$('predDate').value=dateLocal();load();setInterval(()=>{if(view!=='predictions')load()},300000);
-</script></body></html>
+</script>
+
+<script>
+const galleryStorageKey = 'bola168_gallery';
+
+function getGallery(){
+  try {
+    return JSON.parse(localStorage.getItem(galleryStorageKey) || '[]');
+  } catch(e) {
+    return [];
+  }
+}
+
+function showGallery(){
+  const items = getGallery();
+  const list = document.getElementById('galleryList');
+
+  if(!items.length){
+    list.innerHTML = '<div class="empty">Belum ada foto prediksi.</div>';
+    return;
+  }
+
+  list.innerHTML = items.map((item,i)=>`
+    <article class="prediction">
+      <img src="${item.image}"
+        alt="Foto prediksi"
+        style="width:100%;max-height:400px;object-fit:contain;border-radius:12px;background:#030b18">
+
+      <h3>${safe(item.caption)}</h3>
+
+      <div class="muted">${safe(item.date)}</div>
+
+      <p>
+        <button class="delete" type="button" data-gallery-delete="${i}">
+          Hapus Foto
+        </button>
+      </p>
+    </article>
+  `).join('');
+
+  list.querySelectorAll('[data-gallery-delete]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const arr = getGallery();
+      arr.splice(Number(btn.dataset.galleryDelete),1);
+      localStorage.setItem(galleryStorageKey,JSON.stringify(arr));
+      showGallery();
+    });
+  });
+}
+
+document.getElementById('galleryForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+
+  const file = document.getElementById('galleryImage').files[0];
+  const caption = document.getElementById('galleryCaption').value.trim();
+
+  if(!file || !caption) return;
+
+  if(!file.type.startsWith('image/')){
+    alert('File harus berupa gambar.');
+    return;
+  }
+
+  const button = e.target.querySelector('button[type="submit"]');
+  button.disabled = true;
+  button.textContent = 'Memproses foto...';
+
+  try{
+    const image = await new Promise((resolve,reject)=>{
+      const reader = new FileReader();
+      reader.onload = ()=>resolve(reader.result);
+      reader.onerror = ()=>reject(new Error('Gagal membaca foto'));
+      reader.readAsDataURL(file);
+    });
+
+    const img = await new Promise((resolve,reject)=>{
+      const el = new Image();
+      el.onload = ()=>resolve(el);
+      el.onerror = ()=>reject(new Error('Gagal membuka foto'));
+      el.src = image;
+    });
+
+    const canvas = document.createElement('canvas');
+    const maxSize = 900;
+    const scale = Math.min(1,maxSize/Math.max(img.width,img.height));
+
+    canvas.width = Math.round(img.width*scale);
+    canvas.height = Math.round(img.height*scale);
+
+    canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+
+    const compressed = canvas.toDataURL('image/jpeg',0.65);
+
+    const items = getGallery();
+    items.unshift({
+      image: compressed,
+      caption: caption,
+      date: new Date().toLocaleString('id-ID')
+    });
+
+    localStorage.setItem(galleryStorageKey,JSON.stringify(items));
+
+    e.target.reset();
+    showGallery();
+    alert('Foto berhasil ditambahkan ke galeri!');
+  }catch(err){
+    alert('Gagal menyimpan foto. Penyimpanan browser mungkin penuh.');
+  }finally{
+    button.disabled = false;
+    button.textContent = '📤 UPLOAD GALERI';
+  }
+});
+
+showGallery();
+</script>
+
+ <!-- GALERI PREDIKSI -->
+<section id="galeriPrediksi" class="card">
+  <div class="card-title">📸 GALERI PREDIKSI BG OPET</div>
+  <p class="muted">Upload foto pertandingan, prediksi, dan analisis kamu.</p>
+
+  <form id="galleryForm">
+    <div class="field">
+      <label for="galleryImage">Foto prediksi</label>
+      <input id="galleryImage" type="file" accept="image/*" required>
+    </div>
+
+    <div class="field" style="margin-top:12px">
+      <label for="galleryCaption">Caption / Analisis</label>
+      <textarea id="galleryCaption" placeholder="Tulis prediksi atau analisis pertandingan..." required></textarea>
+    </div>
+
+    <p>
+      <button class="btn" type="submit">📤 UPLOAD GALERI</button>
+    </p>
+  </form>
+
+  <div class="card-title" style="margin-top:20px">Foto Prediksi</div>
+  <div id="galleryList">
+    <div class="empty">Belum ada foto prediksi.</div>
+  </div>
+</section>
+
+</body>
+</html>
