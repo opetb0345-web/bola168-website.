@@ -1,0 +1,54 @@
+
+const crypto = require("crypto");
+
+exports.handler = async (event) => {
+  if (event.httpMethod !== "POST") {
+    return json(405, { error: "Method tidak diizinkan." });
+  }
+
+  const password = event.headers["x-admin-password"];
+
+  if (!password || password !== process.env.PREDICTION_ADMIN_PASSWORD) {
+    return json(401, { error: "Password salah." });
+  }
+
+  const cloud = process.env.CLOUDINARY_CLOUD_NAME;
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const secret = process.env.CLOUDINARY_API_SECRET;
+
+  if (!cloud || !apiKey || !secret) {
+    return json(500, { error: "Konfigurasi Cloudinary belum lengkap." });
+  }
+
+  const timestamp = Math.floor(Date.now() / 1000);
+  const folder = "bola168-prediksi";
+  const tags = "bola168-prediksi";
+
+  const stringToSign =
+    `folder=${folder}&tags=${tags}&timestamp=${timestamp}${secret}`;
+
+  const signature = crypto
+    .createHash("sha1")
+    .update(stringToSign)
+    .digest("hex");
+
+  return json(200, {
+    cloudName: cloud,
+    apiKey,
+    timestamp,
+    folder,
+    tags,
+    signature
+  });
+};
+
+function json(statusCode, body) {
+  return {
+    statusCode,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store"
+    },
+    body: JSON.stringify(body)
+  };
+}
