@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   // Cache each query type to conserve the API daily quota.
   const q = req.query || {};
-  const cacheSeconds = q.live === "all" ? 600 : q.teams ? 86400 : q.h2h ? 86400 : q.next ? 43200 : 21600;
+  const cacheSeconds = q.live === "all" ? 900 : q.teams ? 86400 : q.h2h ? 86400 : q.next ? 86400 : 43200;
   res.setHeader("Cache-Control", `public, s-maxage=${cacheSeconds}, stale-while-revalidate=${cacheSeconds * 2}`);
 
   const key = process.env.API_FOOTBALL_KEY;
