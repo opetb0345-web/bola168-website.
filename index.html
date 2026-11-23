@@ -151,7 +151,7 @@ main{padding:0 13px;margin:17px auto}
 <!-- GALERI PREDIKSI ONLINE -->
 <section id="galeriPrediksi" class="card">
 <div class="card-title">📸 GALERI PREDIKSI BG OPET</div>
-<p class="muted">Galeri publik BOLA168. Hanya admin yang dapat mengunggah dan menghapus foto.</p>
+<p class="muted">Galeri privat BG OPET. Hanya admin yang login dapat melihat foto dan mengelola galeri.</p>
 
 <div id="galleryLogin">
   <div class="field">
@@ -184,8 +184,8 @@ main{padding:0 13px;margin:17px auto}
   </form>
 </div>
 
-<div class="card-title" style="margin-top:20px">Foto Prediksi</div>
-<div id="galleryList"><div class="empty">Memuat galeri...</div></div>
+<div class="card-title" style="margin-top:20px" id="galleryPhotosTitle" hidden>Foto Prediksi (Privat)</div>
+<div id="galleryList" hidden><div class="empty">Memuat galeri...</div></div>
 </section>
 
 <div class="footer">© BOLA168 • BG OPET • Data pertandingan disediakan oleh API-Football. Ketersediaan data mengikuti paket API.</div>
@@ -360,8 +360,11 @@ function updateGalleryAccess(user){
   galleryAdminUser = user && user.email === ADMIN_EMAIL ? user : null;
   $('galleryLogin').hidden = !!galleryAdminUser;
   $('galleryAdmin').hidden = !galleryAdminUser;
+  $('galleryList').hidden = !galleryAdminUser;
+  $('galleryPhotosTitle').hidden = !galleryAdminUser;
   if(user && !galleryAdminUser) galleryMessage('Akun ini bukan admin BOLA168.', true);
-  showGallery();
+  if(galleryAdminUser) showGallery();
+  else galleryList.innerHTML = '<div class="empty">Galeri privat. Login admin untuk melihat foto.</div>';
 }
 
 async function adminLogin(){
@@ -401,7 +404,7 @@ async function adminLogout(){
 }
 
 async function showGallery(){
-  if(!galleryListReady()) return;
+  if(!galleryListReady() || !galleryAdminUser) return;
   galleryList.innerHTML = '<div class="empty">Memuat foto prediksi...</div>';
   const {data,error} = await supabaseClient
     .from('bola168_gallery')
