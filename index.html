@@ -68,7 +68,7 @@ main{padding:0 13px;margin:17px auto}
 .card{padding:14px}
 .form-grid{grid-template-columns:1fr}
 }
-#predictionsCard{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(180deg,rgba(3,10,24,.72),rgba(4,13,29,.88)),url("/assets/28148a1d-59be-4d94-965d-4e6dfe28ba9b.png") center/cover no-repeat;border:1px solid rgba(245,196,81,.4);box-shadow:0 15px 40px #0008}
+#predictionsCard{position:relative;isolation:isolate;overflow:hidden;background:url("/assets/28148a1d-59be-4d94-965d-4e6dfe28ba9b.png") center/cover no-repeat;border:1px solid rgba(245,196,81,.4);box-shadow:0 15px 40px #0008}
 #predictionsCard .online-prediction img{display:block;width:100%;max-width:720px;max-height:460px;object-fit:contain;margin:12px auto;border-radius:12px;background:rgba(3,11,24,.75);box-shadow:0 8px 24px #0008}
 #predictionsCard .online-prediction{background:rgba(4,16,35,.55);backdrop-filter:blur(4px);border:1px solid rgba(245,196,81,.25);border-radius:14px;padding:16px;margin:16px 0}
 </style>
@@ -126,6 +126,7 @@ main{padding:0 13px;margin:17px auto}
 <div class="card-title">⚡ PREDIKSI BG OPET</div>
 <p class="muted">Prediksi pertandingan yang diposting secara online.</p>
 <div id="predictionOnlineList"><div class="empty">Memuat postingan prediksi...</div></div>
+<div id="predictionComments" style="margin-top:24px;padding:16px;border:1px solid rgba(245,196,81,.35);border-radius:14px;background:rgba(5,15,30,.82)"><h3 style="margin:0 0 8px;color:var(--gold2)">💬 Komentar Pengunjung</h3><p class="muted">Silakan berbagi komentar tentang prediksi.</p><form id="predictionCommentForm"><div class="field"><label for="commentName">Nama</label><input id="commentName" maxlength="40" placeholder="Nama kamu" required></div><div class="field" style="margin-top:10px"><label for="commentText">Komentar</label><textarea id="commentText" maxlength="500" placeholder="Tulis komentar..." required></textarea></div><p><button class="btn" id="commentSend" type="submit">KIRIM KOMENTAR</button></p></form><div id="commentList"><div class="empty">Memuat komentar...</div></div></div>
 </section>
 
 <section class="card" id="h2hCard">
@@ -281,6 +282,22 @@ async function searchH2H(){
     $('h2hResults').innerHTML=`<div class="empty error">Gagal mengambil H2H: ${safe(e.message)}<br>Periksa kuota API-Football.</div>`;
   }
 }
+async function loadPredictionComments(){
+  const list=$('commentList');
+  try{
+    const {data,error}=await supabaseClient.from('bola168_comments').select('id,name,comment,created_at').order('created_at',{ascending:false}).limit(100);
+    if(error) throw error;
+    if(!data?.length){list.innerHTML='<div class="empty">Belum ada komentar. Jadilah yang pertama!</div>';return;}
+    list.innerHTML=data.map(x=>`<article style="padding:12px 4px;border-bottom:1px solid rgba(166,190,220,.2)"><strong>${safe(x.name)}</strong><div style="white-space:pre-wrap;overflow-wrap:anywhere">${safe(x.comment)}</div><small class="muted">${safe(new Date(x.created_at).toLocaleString('id-ID'))}</small></article>`).join('');
+  }catch(e){list.innerHTML='<div class="empty error">Komentar belum tersedia. Perlu mengaktifkan tabel komentar.</div>';}
+}
+$('predictionCommentForm').addEventListener('submit',async event=>{
+  event.preventDefault();const name=$('commentName').value.trim(),comment=$('commentText').value.trim();if(!name||!comment)return;
+  const button=$('commentSend');button.disabled=true;button.textContent='Mengirim...';
+  try{const {error}=await supabaseClient.from('bola168_comments').insert({name,comment});if(error)throw error;$('commentText').value='';await loadPredictionComments();}
+  catch(e){alert('Komentar gagal dikirim. Tabel komentar mungkin belum dibuat.');}
+  finally{button.disabled=false;button.textContent='KIRIM KOMENTAR';}
+});
 async function showPredictions(){
   const target=$('predictionOnlineList');
   target.innerHTML='<div class="empty">Memuat postingan prediksi...</div>';
@@ -297,6 +314,7 @@ async function showPredictions(){
       </article>`;
     }).join('');
   }catch(error){target.innerHTML='<div class="empty error">Gagal memuat postingan: '+safe(error.message)+'</div>';}
+  loadPredictionComments();
 }
 function switchView(next){
   view=next;
