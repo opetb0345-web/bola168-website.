@@ -11,7 +11,7 @@
 body{margin:0;background:radial-gradient(ellipse at 50% -20%,#173765 0%,var(--navy) 55%,#030b18 100%);color:#f6f8fc;font:15px/1.55 Arial,sans-serif;min-height:100vh}
 header{position:sticky;top:0;z-index:5;background:rgba(4,14,31,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .wrap{max-width:1160px;margin:auto;padding:15px 20px}
-.brand{display:flex;align-items:center;justify-content:space-between;gap:13px}.brand-left{display:flex;align-items:center;gap:13px;min-width:0}.brand-opet-logo{width:92px;height:92px;object-fit:contain;border:0;border-radius:0;box-shadow:0 0 22px #f5c45144;mix-blend-mode:screen;display:block;flex:0 0 auto}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:13px}.brand-left{display:flex;align-items:center;gap:13px;min-width:0}.brand-logo-orbit{position:relative;width:116px;height:116px;display:grid;place-items:center;flex:0 0 auto;isolation:isolate}.brand-logo-orbit:before,.brand-logo-orbit:after{content:"";position:absolute;inset:3px;border-radius:50%;pointer-events:none}.brand-logo-orbit:before{background:conic-gradient(from 0deg,transparent 0 12%,#168cff 18%,#55c8ff 27%,transparent 36% 48%,#f4c34e 56%,#fff0a6 64%,transparent 73% 86%,#168cff 94%,transparent);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));filter:drop-shadow(0 0 5px #168cffaa) drop-shadow(0 0 7px #f4c34e88);animation:orbitSpin 7s linear infinite}.brand-logo-orbit:after{inset:10px;border:1px solid #168cff66;box-shadow:0 0 12px #168cff55,inset 0 0 10px #f4c34e33;animation:orbitPulse 2.8s ease-in-out infinite}.brand-opet-logo{position:relative;z-index:1;width:92px;height:92px;object-fit:contain;border:0;border-radius:0;box-shadow:0 0 22px #f5c45144;mix-blend-mode:screen;display:block;flex:0 0 auto}@keyframes orbitSpin{to{transform:rotate(360deg)}}@keyframes orbitPulse{0%,100%{transform:scale(.94);opacity:.55}50%{transform:scale(1.06);opacity:1}}
 .logo-img{width:60px;height:60px;object-fit:cover;border-radius:12px;border:1px solid var(--gold);box-shadow:0 0 20px #f5c45155;display:block}
 h1{font-size:23px;letter-spacing:2px;margin:0;color:var(--gold2)}
 .sub{font-size:11px;letter-spacing:2px;color:#aebed4}
@@ -86,7 +86,7 @@ main{max-width:1160px;margin:26px auto;padding:0 20px}
 .delete{background:#5b2630;color:#fff;border:1px solid #a94a58;border-radius:8px;padding:7px 11px;cursor:pointer}
 .footer{text-align:center;color:#8395ae;font-size:12px;padding:28px 10px 38px}
 [hidden]{display:none!important}
-@media(max-width:650px){.brand-opet-logo{width:68px;height:68px}
+@media(max-width:650px){.brand-logo-orbit{width:84px;height:84px}.brand-opet-logo{width:68px;height:68px}
 .bigmatch-row{grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr);gap:6px}.bigmatch-team{padding:8px}.bigmatch-team input{padding:11px 7px;font-size:13px}.bigmatch-head{font-size:12px}.bigmatch-vs{font-size:12px}
 .wrap{padding:12px 14px}
 main{padding:0 13px;margin:17px auto}
@@ -115,7 +115,7 @@ main{padding:0 13px;margin:17px auto}
 <div class="sub">BG OPET • LIVE SCORE • FIXTURES • PREDIKSI</div>
 </div>
 </div>
-<img src="/assets/6273991443663755145.jpg" class="brand-opet-logo" alt="Logo BG OPET">
+<div class="brand-logo-orbit"><img src="/assets/6273991443663755145.jpg" class="brand-opet-logo" alt="Logo BG OPET"></div>
 </div>
 <nav>
 <button class="tab tab-live active" data-view="live">Live Score</button>
