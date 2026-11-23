@@ -2,14 +2,16 @@
 // Set API_FOOTBALL_KEY in Vercel Project Settings > Environment Variables.
 module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
-  res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=120");
+  // Cache each query type to conserve the API daily quota.
+  const q = req.query || {};
+  const cacheSeconds = q.live === "all" ? 600 : q.teams ? 86400 : q.h2h ? 86400 : q.next ? 43200 : 21600;
+  res.setHeader("Cache-Control", `public, s-maxage=${cacheSeconds}, stale-while-revalidate=${cacheSeconds * 2}`);
 
   const key = process.env.API_FOOTBALL_KEY;
   if (!key) {
     return res.status(503).json({ error: "API_FOOTBALL_KEY belum dipasang di Vercel." });
   }
 
-  const q = req.query || {};
   const headers = { "x-apisports-key": key };
 
   async function requestBody(endpoint, params) {
