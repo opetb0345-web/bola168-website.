@@ -54,8 +54,17 @@ main{max-width:1160px;margin:26px auto;padding:0 20px}
 .empty{text-align:center;padding:30px 12px;color:var(--muted)}
 .error{color:#ffb7a8}
 .social{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
-.social a{display:inline-flex;align-items:center;justify-content:center;min-width:145px;text-decoration:none;color:#fff;font-weight:900;padding:13px 18px;border-radius:13px;border:1px solid var(--gold);background:linear-gradient(135deg,#173e70,#0a1b35 58%,#102b50);box-shadow:0 0 7px #f5c45188,0 0 17px #247bd477;transition:.2s}
-.social a:hover{transform:translateY(-3px);box-shadow:0 0 10px var(--gold),0 0 25px #287edb}
+.social a{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;min-width:145px;text-decoration:none;color:#fff;font-weight:900;padding:13px 18px;border-radius:13px;border:1px solid currentColor;transition:transform .2s,box-shadow .25s}
+.social a:after{content:"";position:absolute;top:-30%;left:-80%;width:45%;height:160%;transform:skewX(-25deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);animation:tabshine 3s infinite}
+.social a:hover{transform:translateY(-3px)}
+.social-whatsapp{color:#4ade80;background:linear-gradient(135deg,#14532d,#052e16);box-shadow:0 0 9px #22c55e88,0 0 20px #22c55e55}
+.social-whatsapp:hover{box-shadow:0 0 12px #22c55e,0 0 28px #22c55eaa}
+.social-tiktok{color:#e5e7eb;background:linear-gradient(135deg,#292929,#050505);box-shadow:0 0 9px #ffffff55,0 0 20px #000}
+.social-tiktok:hover{box-shadow:0 0 12px #fff,0 0 28px #ffffff66}
+.social-instagram{color:#ff80c0;background:linear-gradient(135deg,#831843,#4c1d95,#111827);box-shadow:0 0 9px #ec489988,0 0 20px #ec489955}
+.social-instagram:hover{box-shadow:0 0 12px #ec4899,0 0 28px #ec4899aa}
+.social-facebook{color:#93c5fd;background:linear-gradient(135deg,#1d4ed8,#082f6b);box-shadow:0 0 9px #3b82f688,0 0 20px #3b82f655}
+.social-facebook:hover{box-shadow:0 0 12px #3b82f6,0 0 28px #3b82f6aa}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .field label{display:block;color:#d9e5f5;font-size:12px;font-weight:700;margin-bottom:5px}
 .field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #365174;border-radius:9px;background:#07172e;color:#fff;font:inherit}
@@ -119,10 +128,10 @@ main{padding:0 13px;margin:17px auto}
 <div class="card-title">IKUTI SOSIAL MEDIA KAMI</div>
 <p class="muted">Terhubung dengan BG OPET melalui media sosial resmi.</p>
 <div class="social">
-<a href="https://wa.me/6285926559500" target="_blank" rel="noopener">☏ WhatsApp</a>
-<a href="https://www.tiktok.com/@bg.opet00?_r=1&_t=ZS-9BbNFfqhRuG" target="_blank" rel="noopener">♫ TikTok</a>
-<a href="https://www.instagram.com/opetb0345/" target="_blank" rel="noopener">◎ Instagram</a>
-<a href="https://www.facebook.com/share/1D2zTETeoR/" target="_blank" rel="noopener">f Facebook</a>
+<a class="social-whatsapp" href="https://wa.me/6285926559500" target="_blank" rel="noopener">☏ WhatsApp</a>
+<a class="social-tiktok" href="https://www.tiktok.com/@bg.opet00?_r=1&_t=ZS-9BbNFfqhRuG" target="_blank" rel="noopener">♫ TikTok</a>
+<a class="social-instagram" href="https://www.instagram.com/opetb0345/" target="_blank" rel="noopener">◎ Instagram</a>
+<a class="social-facebook" href="https://www.facebook.com/share/1D2zTETeoR/" target="_blank" rel="noopener">f Facebook</a>
 </div>
 </section>
 
