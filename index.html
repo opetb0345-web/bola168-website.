@@ -334,7 +334,7 @@ $('h2hSearch').addEventListener('click',searchH2H);
 setupTeamSearch('home');setupTeamSearch('away');
 $('predDate').value=dateLocal();
 load();
-setInterval(()=>{if(view!=='predictions')load();},300000);
+setInterval(()=>{if(view==='live')load();},900000);
 </script>
 
 <!-- SUPABASE DAN GALERI ONLINE -->
