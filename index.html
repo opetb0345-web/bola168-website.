@@ -115,7 +115,7 @@ main{padding:0 13px;margin:17px auto}
 <nav>
 <button class="tab tab-live active" data-view="live">Live Score</button>
 <button class="tab tab-match" data-view="today">Match Day</button>
-<div class="website-dropdown" id="websiteDropdown"><button class="tab tab-website" id="websiteTab" type="button" aria-haspopup="true" aria-expanded="false">Website168 ▾</button><div class="website-menu" id="websiteMenu"><button type="button" class="website-choice website-register" id="websiteRegister"><span class="blue-hand">👉</span> DAFTAR</button><button type="button" class="website-choice website-login" id="websiteLogin">🔑 LOGIN</button></div></div>
+<div class="website-dropdown" id="websiteDropdown"><button class="tab tab-website" id="websiteTab" type="button" aria-haspopup="true" aria-expanded="false">Website168 ▾</button><div class="website-menu" id="websiteMenu"><button type="button" class="website-choice website-register" id="websiteRegister"><span class="blue-hand">👉</span> DAFTAR</button><button type="button" class="website-choice website-login" id="websiteLogin">🎁 PROMOSI</button></div></div>
 <button class="tab tab-pred" data-view="predictions">⚡ Prediksi BG OPET</button>
 </nav>
 </div>
@@ -357,7 +357,7 @@ function switchView(next){
 document.querySelectorAll('.tab[data-view]').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
 $('refresh').addEventListener('click',load);
 $('h2hSearch').addEventListener('click',searchH2H);
-const websiteDropdown=$('websiteDropdown');const websiteTab=$('websiteTab');websiteTab.addEventListener('click',event=>{event.stopPropagation();websiteDropdown.classList.toggle('open');websiteTab.setAttribute('aria-expanded',websiteDropdown.classList.contains('open'));});document.addEventListener('click',event=>{if(!websiteDropdown.contains(event.target)){websiteDropdown.classList.remove('open');websiteTab.setAttribute('aria-expanded','false');}});$('websiteRegister').addEventListener('click',()=>window.open('https://tinyurl.com/vipbola168','_blank','noopener'));$('websiteLogin').addEventListener('click',()=>alert('Link LOGIN Website168 belum ditambahkan.'));setupTeamSearch('home');setupTeamSearch('away');
+const websiteDropdown=$('websiteDropdown');const websiteTab=$('websiteTab');websiteTab.addEventListener('click',event=>{event.stopPropagation();websiteDropdown.classList.toggle('open');websiteTab.setAttribute('aria-expanded',websiteDropdown.classList.contains('open'));});document.addEventListener('click',event=>{if(!websiteDropdown.contains(event.target)){websiteDropdown.classList.remove('open');websiteTab.setAttribute('aria-expanded','false');}});$('websiteRegister').addEventListener('click',()=>window.open('https://tinyurl.com/vipbola168','_blank','noopener'));$('websiteLogin').addEventListener('click',()=>window.open('https://tinyurl.com/promosi168site','_blank','noopener'));setupTeamSearch('home');setupTeamSearch('away');
 $('predDate').value=dateLocal();
 load();
 setInterval(()=>{if(view==='live')load();},900000);
