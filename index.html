@@ -70,7 +70,7 @@ main{padding:0 13px;margin:17px auto}
 }
 #predictionsCard{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(180deg,rgba(3,10,24,.90),rgba(4,13,29,.96)),url("/assets/bg-opet-anime-hero%20(1).jpg") center/cover no-repeat;border:1px solid rgba(245,196,81,.4);box-shadow:0 15px 40px #0008}
 #predictionsCard .prediction{background:rgba(4,16,35,.88);backdrop-filter:blur(5px);border-color:rgba(245,196,81,.35)}
-#predictionsCard .field input,#predictionsCard .field select,#predictionsCard .field textarea{background:rgba(4,14,31,.92)}
+#predictionsCard .field input,#predictionsCard .field select,#predictionsCard .field textarea{background:rgba(4,14,31,.92)}\n#predictionsCard .online-prediction img{display:block;width:100%;max-height:650px;object-fit:contain;border-radius:12px;background:#030b18}\n#predictionsCard .online-prediction{padding:12px 0;background:transparent;border:0;border-bottom:1px solid rgba(245,196,81,.25)}
 </style>
 </head>
 <body>
@@ -88,7 +88,7 @@ main{padding:0 13px;margin:17px auto}
 <button class="tab active" data-view="live">Live Score</button>
 <button class="tab" data-view="today">Hari Ini</button>
 <button class="tab" data-view="upcoming">Jadwal</button>
-<button class="tab" data-view="predictions">⚡ Prediksi Saya</button>
+<button class="tab" data-view="predictions">⚡ Prediksi BG OPET</button>
 </nav>
 </div>
 </header>
@@ -123,32 +123,9 @@ main{padding:0 13px;margin:17px auto}
 </section>
 
 <section class="card" id="predictionsCard" hidden>
-<div class="card-title">⚡ PREDIKSI SAYA</div>
-<p class="muted">Prediksi tersimpan di browser/perangkat ini.</p>
-<form id="predictionForm">
-<div class="form-grid">
-<div class="field"><label for="predDate">Tanggal pertandingan</label><input id="predDate" type="date" required></div>
-<div class="field"><label for="predLeague">Liga / Kompetisi</label><input id="predLeague" placeholder="Contoh: Liga Inggris" required></div>
-<div class="field"><label for="homeTeam">Tim kandang</label><input id="homeTeam" placeholder="Nama tim kandang" required></div>
-<div class="field"><label for="awayTeam">Tim tandang</label><input id="awayTeam" placeholder="Nama tim tandang" required></div>
-<div class="field">
-<label for="predPick">Pilihan prediksi</label>
-<select id="predPick">
-<option value="1">1 — Tim kandang menang</option>
-<option value="X">X — Seri</option>
-<option value="2">2 — Tim tandang menang</option>
-<option value="Over 2.5">Over 2.5 gol</option>
-<option value="Under 2.5">Under 2.5 gol</option>
-<option value="BTTS">Kedua tim mencetak gol</option>
-</select>
-</div>
-<div class="field"><label for="predScore">Prediksi skor (opsional)</label><input id="predScore" placeholder="Contoh: 2-1"></div>
-<div class="field" style="grid-column:1/-1"><label for="predNotes">Analisis / catatan (opsional)</label><textarea id="predNotes" placeholder="Tulis alasan atau analisis prediksi..."></textarea></div>
-</div>
-<p><button class="btn" type="submit">⚡ SIMPAN PREDIKSI</button></p>
-</form>
-<div class="card-title" style="margin-top:20px">Daftar Prediksi</div>
-<div id="predictionList"><div class="empty">Belum ada prediksi.</div></div>
+<div class="card-title">⚡ PREDIKSI BG OPET</div>
+<p class="muted">Prediksi pertandingan yang diposting secara online.</p>
+<div id="predictionOnlineList"><div class="empty">Memuat postingan prediksi...</div></div>
 </section>
 
 <section class="card" id="h2hCard">
@@ -304,31 +281,29 @@ async function searchH2H(){
     $('h2hResults').innerHTML=`<div class="empty error">Gagal mengambil H2H: ${safe(e.message)}<br>Periksa kuota API-Football.</div>`;
   }
 }
-function getPredictions(){
-  try{return JSON.parse(localStorage.getItem('bola168_predictions')||'[]');}
-  catch(e){return [];}
+async function showPredictions(){
+  const target=$('predictionOnlineList');
+  target.innerHTML='<div class="empty">Memuat postingan prediksi...</div>';
+  try{
+    const {data,error}=await supabaseClient.from('bola168_gallery')
+      .select('id,image_path,caption,created_at').order('created_at',{ascending:false});
+    if(error) throw error;
+    if(!data?.length){target.innerHTML='<div class="empty">Belum ada postingan prediksi online.</div>';return;}
+    target.innerHTML=data.map(item=>{
+      const {data:publicData}=supabaseClient.storage.from(GALLERY_BUCKET).getPublicUrl(item.image_path);
+      return `<article class="prediction online-prediction">
+        <img src="${safe(publicData.publicUrl)}" alt="Prediksi BG OPET" loading="lazy">
+        <h3>${safe(item.caption)}</h3><div class="muted">${safe(new Date(item.created_at).toLocaleString('id-ID'))}</div>
+      </article>`;
+    }).join('');
+  }catch(error){target.innerHTML='<div class="empty error">Gagal memuat postingan: '+safe(error.message)+'</div>';}
 }
-function savePredictions(items){localStorage.setItem('bola168_predictions',JSON.stringify(items));}
-function showPredictions(){
-  const items=getPredictions();
-  if(!items.length){$('predictionList').innerHTML='<div class="empty">Belum ada prediksi. Silakan tambahkan prediksi pertama.</div>';return;}
-  $('predictionList').innerHTML=items.map((p,i)=>`<article class="prediction"><div class="row"><h3>${safe(p.home)} vs ${safe(p.away)}</h3><button class="delete" data-delete="${i}" type="button">Hapus</button></div><div class="muted">${safe(p.date)} • ${safe(p.league)}</div><p><strong>Prediksi:</strong> ${safe(p.pick)}${p.score?' • <strong>Skor:</strong> '+safe(p.score):''}</p>${p.notes?`<p>${safe(p.notes)}</p>`:''}</article>`).join('');
-  document.querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>{
-    const arr=getPredictions();arr.splice(Number(b.dataset.delete),1);savePredictions(arr);showPredictions();
-  }));
-}
-$('predictionForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const item={date:$('predDate').value,league:$('predLeague').value.trim(),home:$('homeTeam').value.trim(),away:$('awayTeam').value.trim(),pick:$('predPick').value,score:$('predScore').value.trim(),notes:$('predNotes').value.trim()};
-  const items=getPredictions();items.unshift(item);savePredictions(items);
-  $('predictionForm').reset();$('predDate').value=dateLocal();showPredictions();
-});
 function switchView(next){
   view=next;
   document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view===view));
   const isPred=view==='predictions';
   $('matchesCard').hidden=isPred;$('predictionsCard').hidden=!isPred;$('refresh').hidden=isPred;
-  if(isPred){$('sectionTitle').textContent='Prediksi Saya';$('updated').textContent='';showPredictions();}
+  if(isPred){$('sectionTitle').textContent='Prediksi BG OPET';$('updated').textContent='';showPredictions();}
   else{$('sectionTitle').textContent=view==='live'?'Pertandingan Sedang Berlangsung':view==='today'?'Pertandingan Hari Ini':'Jadwal Mendatang';load();}
 }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
