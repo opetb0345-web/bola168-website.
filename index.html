@@ -73,6 +73,7 @@ main{max-width:1160px;margin:26px auto;padding:0 20px}
 .social-facebook{color:#93c5fd;background:linear-gradient(135deg,#1d4ed8,#082f6b);box-shadow:0 0 9px #3b82f688,0 0 20px #3b82f655}
 .social-facebook:hover{box-shadow:0 0 12px #3b82f6,0 0 28px #3b82f6aa}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.bigmatch-grid{display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);gap:14px;align-items:center;margin-top:18px}.bigmatch-team{padding:18px;border:1px solid rgba(56,189,248,.48);border-radius:15px;background:linear-gradient(145deg,rgba(10,42,76,.96),rgba(5,19,39,.98));box-shadow:0 0 18px rgba(56,189,248,.12)}.bigmatch-team label{display:block;color:#9bdcff;font-weight:900;letter-spacing:1px;font-size:12px;margin-bottom:9px}.bigmatch-team input{width:100%;padding:14px;border:1px solid #39749a;border-radius:10px;background:#06152a;color:#fff;font:700 16px Arial,sans-serif;outline:none}.bigmatch-team input:focus{border-color:#38bdf8;box-shadow:0 0 12px #38bdf855}.bigmatch-vs{display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#f5c451,#d97706);color:#172033;font-weight:1000;font-size:18px;box-shadow:0 0 18px #f5c45166}.bigmatch-note{text-align:center;margin-top:14px;color:#9fb2ca;font-size:12px}
 .field label{display:block;color:#d9e5f5;font-size:12px;font-weight:700;margin-bottom:5px}
 .field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #365174;border-radius:9px;background:#07172e;color:#fff;font:inherit}
 .field textarea{min-height:76px;resize:vertical}
@@ -86,6 +87,7 @@ main{max-width:1160px;margin:26px auto;padding:0 20px}
 .footer{text-align:center;color:#8395ae;font-size:12px;padding:28px 10px 38px}
 [hidden]{display:none!important}
 @media(max-width:650px){
+.bigmatch-grid{grid-template-columns:1fr;gap:10px}.bigmatch-vs{width:44px;height:44px;margin:auto}.bigmatch-team{padding:14px}
 .wrap{padding:12px 14px}
 main{padding:0 13px;margin:17px auto}
 .hero{min-height:270px;background-position:62% center}
@@ -114,7 +116,7 @@ main{padding:0 13px;margin:17px auto}
 </div>
 <nav>
 <button class="tab tab-live active" data-view="live">Live Score</button>
-<button class="tab tab-match" data-view="today">Match Day</button>
+<button class="tab tab-match" data-view="bigmatch">Big Match</button>
 <div class="website-dropdown" id="websiteDropdown"><button class="tab tab-website" id="websiteTab" type="button" aria-haspopup="true" aria-expanded="false">Website168 ▾</button><div class="website-menu" id="websiteMenu"><button type="button" class="website-choice website-register" id="websiteRegister"><span class="blue-hand">👉</span> DAFTAR</button><button type="button" class="website-choice website-login" id="websiteLogin">🎁 PROMOSI</button></div></div>
 <button class="tab tab-pred" data-view="predictions">⚡ Prediksi BG OPET</button>
 </nav>
@@ -148,6 +150,23 @@ main{padding:0 13px;margin:17px auto}
 <span class="muted" id="updated">Memuat data…</span>
 </div>
 <div id="matches"><div class="empty">Sedang mengambil data pertandingan…</div></div>
+</section>
+
+<section class="card" id="bigMatchCard" hidden>
+<div class="card-title">🔥 BIG MATCH</div>
+<p class="muted">Masukkan nama dua tim yang ingin ditampilkan dalam pertandingan pilihan.</p>
+<div class="bigmatch-grid">
+  <div class="bigmatch-team">
+    <label for="bigMatchTeamA">TEAM A</label>
+    <input id="bigMatchTeamA" type="text" maxlength="60" placeholder="Nama tim pertama">
+  </div>
+  <div class="bigmatch-vs">VS</div>
+  <div class="bigmatch-team">
+    <label for="bigMatchTeamB">TEAM B</label>
+    <input id="bigMatchTeamB" type="text" maxlength="60" placeholder="Nama tim kedua">
+  </div>
+</div>
+<div class="bigmatch-note">Big Match sementara hanya menampilkan kolom pilihan tim dan tidak menggunakan kuota API-Football.</div>
 </section>
 
 <section class="card" id="predictionsCard" hidden>
@@ -276,7 +295,7 @@ function render(rows){
   $('matches').innerHTML=rows.map(f=>`<div class="match"><div><div class="league">${safe(f.league?.name||'Pertandingan')}</div><div class="team">${safe(f.teams?.home?.name)}</div></div><div class="score">${f.goals?.home??'-'} : ${f.goals?.away??'-'}<span class="status">${safe(fmtStatus(f))}</span></div><div class="team">${safe(f.teams?.away?.name)}</div></div>`).join('');
 }
 async function load(){
-  if(view==='predictions')return;
+  if(view==='predictions'||view==='bigmatch')return;
   if(view!=='live'){
     $('matches').innerHTML='<div class="empty">Match Day sedang disiapkan. Fitur ini akan menggunakan fungsi baru dan sementara tidak mengambil data dari API-Football.</div>';
     $('updated').textContent='API hanya digunakan untuk Live Score dan H2H';
@@ -355,9 +374,14 @@ function switchView(next){
   view=next;
   document.querySelectorAll('.tab[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===view));
   const isPred=view==='predictions';
-  $('matchesCard').hidden=isPred;$('predictionsCard').hidden=!isPred;$('refresh').hidden=isPred;
+  const isBigMatch=view==='bigmatch';
+  $('matchesCard').hidden=isPred||isBigMatch;
+  $('bigMatchCard').hidden=!isBigMatch;
+  $('predictionsCard').hidden=!isPred;
+  $('refresh').hidden=isPred||isBigMatch;
   if(isPred){$('sectionTitle').textContent='Prediksi BG OPET';$('updated').textContent='';showPredictions();}
-  else{$('sectionTitle').textContent=view==='live'?'Pertandingan Sedang Berlangsung':view==='today'?'Pertandingan Hari Ini':'Jadwal Mendatang';load();}
+  else if(isBigMatch){$('updated').textContent='Tanpa permintaan API-Football';}
+  else{$('sectionTitle').textContent='Pertandingan Sedang Berlangsung';load();}
 }
 document.querySelectorAll('.tab[data-view]').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
 $('refresh').addEventListener('click',load);
