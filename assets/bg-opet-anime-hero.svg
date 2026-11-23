@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" role="img" aria-label="BOLA168 football stadium background">
+<defs>
+ <linearGradient id="night" x2="1" y2="1"><stop stop-color="#07152d"/><stop offset=".55" stop-color="#102b50"/><stop offset="1" stop-color="#020814"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#f5c451" stop-opacity=".42"/><stop offset="1" stop-color="#f5c451" stop-opacity="0"/></radialGradient>
+ <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffe69a"/><stop offset="1" stop-color="#b77a18"/></linearGradient>
+ <pattern id="lines" width="70" height="70" patternUnits="userSpaceOnUse"><path d="M0 70L70 0" stroke="#dce9ff" stroke-opacity=".06" stroke-width="2"/></pattern>
+</defs>
+<rect width="1600" height="700" fill="url(#night)"/><rect width="1600" height="700" fill="url(#glow)"/>
+<circle cx="1220" cy="180" r="470" fill="url(#glow)"/>
+<path d="M0 455Q400 365 800 455T1600 430V700H0Z" fill="#06101f"/>
+<path d="M0 520Q400 430 800 520T1600 495" fill="none" stroke="#f5c451" stroke-opacity=".32" stroke-width="4"/>
+<path d="M0 565Q400 475 800 565T1600 540" fill="none" stroke="#8fb4e7" stroke-opacity=".22" stroke-width="3"/>
+<g fill="#dce9ff" opacity=".7"><circle cx="180" cy="170" r="3"/><circle cx="300" cy="115" r="2"/><circle cx="470" cy="210" r="3"/><circle cx="980" cy="90" r="2"/><circle cx="1420" cy="300" r="3"/><circle cx="1330" cy="90" r="2"/></g>
+<g transform="translate(1110 90)" opacity=".95">
+ <circle cx="190" cy="130" r="145" fill="none" stroke="#f5c451" stroke-opacity=".5" stroke-width="3"/>
+ <circle cx="190" cy="130" r="112" fill="none" stroke="#f5c451" stroke-opacity=".25" stroke-width="2"/>
+ <path d="M125 305L155 195 150 125Q160 75 190 72Q225 78 232 125L225 195 260 305 220 320 190 245 160 320Z" fill="#07101f" stroke="url(#gold)" stroke-width="7" stroke-linejoin="round"/>
+ <path d="M153 130Q190 155 228 130L225 190Q190 215 155 190Z" fill="#f5c451" opacity=".8"/>
+ <path d="M155 195L115 270 90 258 130 170M225 195L270 255 292 240 245 165" fill="none" stroke="#f5c451" stroke-width="20" stroke-linecap="round"/>
+ <path d="M160 318L145 430 120 520 165 525 192 410 215 525 260 520 225 430 220 318" fill="#0c2342" stroke="#d6a53b" stroke-width="7" stroke-linejoin="round"/>
+</g>
+<g transform="translate(80 90)"><text x="0" y="0" fill="#f5c451" font-family="Arial,sans-serif" font-size="26" font-weight="700" letter-spacing="8">BG OPET • FOOTBALL</text><text x="0" y="85" fill="#fff" font-family="Arial,sans-serif" font-size="72" font-weight="900" letter-spacing="3">BOLA168</text><path d="M0 112H360" stroke="#f5c451" stroke-width="5"/><text x="0" y="158" fill="#c6d5e9" font-family="Arial,sans-serif" font-size="22" letter-spacing="5">LIVE SCORE • FIXTURES</text></g>
+<rect width="1600" height="700" fill="url(#lines)"/>
+</svg>
