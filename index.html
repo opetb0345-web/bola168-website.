@@ -277,6 +277,11 @@ function render(rows){
 }
 async function load(){
   if(view==='predictions')return;
+  if(view!=='live'){
+    $('matches').innerHTML='<div class="empty">Match Day sedang disiapkan. Fitur ini akan menggunakan fungsi baru dan sementara tidak mengambil data dari API-Football.</div>';
+    $('updated').textContent='API hanya digunakan untuk Live Score dan H2H';
+    return;
+  }
   $('matches').innerHTML='<div class="empty">Memuat skor…</div>';
   $('updated').textContent='Memuat…';
   try{
