@@ -357,7 +357,7 @@ function switchView(next){
 document.querySelectorAll('.tab[data-view]').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
 $('refresh').addEventListener('click',load);
 $('h2hSearch').addEventListener('click',searchH2H);
-const websiteDropdown=$('websiteDropdown');const websiteTab=$('websiteTab');websiteTab.addEventListener('click',event=>{event.stopPropagation();websiteDropdown.classList.toggle('open');websiteTab.setAttribute('aria-expanded',websiteDropdown.classList.contains('open'));});document.addEventListener('click',event=>{if(!websiteDropdown.contains(event.target)){websiteDropdown.classList.remove('open');websiteTab.setAttribute('aria-expanded','false');}});$('websiteRegister').addEventListener('click',()=>window.open('https://s.id/vipbola168','_blank','noopener'));$('websiteLogin').addEventListener('click',()=>alert('Link LOGIN Website168 belum ditambahkan.'));setupTeamSearch('home');setupTeamSearch('away');
+const websiteDropdown=$('websiteDropdown');const websiteTab=$('websiteTab');websiteTab.addEventListener('click',event=>{event.stopPropagation();websiteDropdown.classList.toggle('open');websiteTab.setAttribute('aria-expanded',websiteDropdown.classList.contains('open'));});document.addEventListener('click',event=>{if(!websiteDropdown.contains(event.target)){websiteDropdown.classList.remove('open');websiteTab.setAttribute('aria-expanded','false');}});$('websiteRegister').addEventListener('click',()=>window.open('https://tinyurl.com/vipbola168','_blank','noopener'));$('websiteLogin').addEventListener('click',()=>alert('Link LOGIN Website168 belum ditambahkan.'));setupTeamSearch('home');setupTeamSearch('away');
 $('predDate').value=dateLocal();
 load();
 setInterval(()=>{if(view==='live')load();},900000);
