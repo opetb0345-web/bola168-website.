@@ -153,7 +153,8 @@ main{padding:0 13px;margin:17px auto}
 <div class="card-title">📸 GALERI PREDIKSI BG OPET</div>
 <p class="muted">Galeri privat BG OPET. Hanya admin yang login dapat melihat foto dan mengelola galeri.</p>
 
-<div id="galleryLogin">
+<button class="delete" id="showAdminLogin" type="button" style="margin-top:10px">🔐 Admin</button>
+<div id="galleryLogin" hidden>
   <div class="field">
     <label for="adminEmail">Email admin</label>
     <input id="adminEmail" type="email" value="opetb0345@gmail.com" readonly>
@@ -164,6 +165,7 @@ main{padding:0 13px;margin:17px auto}
   </div>
   <p><button class="btn" id="adminLoginBtn" type="button">🔐 LOGIN ADMIN</button></p>
   <div id="galleryLoginMessage" class="muted" aria-live="polite"></div>
+  <p><button class="delete" id="hideAdminLogin" type="button">Tutup Login</button></p>
 </div>
 
 <div id="galleryAdmin" hidden>
@@ -358,7 +360,8 @@ function galleryMessage(message, isError=false){
 
 function updateGalleryAccess(user){
   galleryAdminUser = user && user.email === ADMIN_EMAIL ? user : null;
-  $('galleryLogin').hidden = !!galleryAdminUser;
+  $('galleryLogin').hidden = true;
+  $('showAdminLogin').hidden = !!galleryAdminUser;
   $('galleryAdmin').hidden = !galleryAdminUser;
   $('galleryList').hidden = !galleryAdminUser;
   $('galleryPhotosTitle').hidden = !galleryAdminUser;
@@ -514,6 +517,8 @@ $('galleryForm').addEventListener('submit',async event=>{
   }
 });
 
+$('showAdminLogin').addEventListener('click',()=>{$('galleryLogin').hidden=false;$('showAdminLogin').hidden=true;});
+$('hideAdminLogin').addEventListener('click',()=>{$('galleryLogin').hidden=true;$('showAdminLogin').hidden=false;});
 $('adminLoginBtn').addEventListener('click',adminLogin);
 $('adminLogoutBtn').addEventListener('click',adminLogout);
 $('adminPassword').addEventListener('keydown',event=>{
