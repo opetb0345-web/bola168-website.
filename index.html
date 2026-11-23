@@ -16,6 +16,18 @@ header{position:sticky;top:0;z-index:5;background:rgba(4,14,31,.94);backdrop-fil
 h1{font-size:23px;letter-spacing:2px;margin:0;color:var(--gold2)}
 .sub{font-size:11px;letter-spacing:2px;color:#aebed4}
 nav{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.tab{position:relative;overflow:hidden;transition:transform .2s,box-shadow .25s,text-shadow .25s;border-width:1px}
+.tab:after{content:"";position:absolute;top:-30%;left:-70%;width:45%;height:160%;transform:skewX(-25deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);animation:tabshine 3.2s infinite}
+@keyframes tabshine{0%{left:-80%}65%,100%{left:140%}}
+.tab-live{color:#ffe66d;border-color:#facc15;box-shadow:0 0 8px #facc1566,inset 0 0 8px #facc1522;text-shadow:0 0 8px #facc15}
+.tab-live:hover,.tab-live.active{background:linear-gradient(135deg,#fff1a3,#eab308);color:#3b2600;box-shadow:0 0 12px #facc15,0 0 28px #facc1588}
+.tab-website{color:#86efac;border-color:#22c55e;box-shadow:0 0 8px #22c55e66,inset 0 0 8px #22c55e22;text-shadow:0 0 8px #22c55e}
+.tab-website:hover,.tab-website.active{background:linear-gradient(135deg,#bbf7d0,#16a34a);color:#03220d;box-shadow:0 0 12px #22c55e,0 0 28px #22c55e88}
+.tab-match{color:#ff9999;border-color:#ef4444;box-shadow:0 0 8px #ef444466,inset 0 0 8px #ef444422;text-shadow:0 0 8px #ef4444}
+.tab-match:hover,.tab-match.active{background:linear-gradient(135deg,#ffc1c1,#dc2626);color:#360505;box-shadow:0 0 12px #ef4444,0 0 28px #ef444488}
+.tab-pred{color:#7dd3fc;border-color:#38bdf8;box-shadow:0 0 8px #38bdf866,inset 0 0 8px #38bdf822;text-shadow:0 0 8px #38bdf8}
+.tab-pred:hover,.tab-pred.active{background:linear-gradient(135deg,#bae6fd,#0284c7);color:#031b2b;box-shadow:0 0 12px #38bdf8,0 0 28px #38bdf888}
+
 .tab{border:1px solid #294365;background:#0b1b34;color:#dce7f6;padding:10px 17px;border-radius:10px;cursor:pointer;font-weight:700}
 .tab:hover{border-color:var(--gold)}
 .tab.active{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#101b2d;border-color:var(--gold);box-shadow:0 4px 18px #f5c45133}
@@ -85,11 +97,10 @@ main{padding:0 13px;margin:17px auto}
 </div>
 </div>
 <nav>
-<button class="tab active" data-view="live">Live Score</button>
-<button class="tab" data-view="today">Hari Ini</button>
-<button class="tab" data-view="upcoming">Website168</button>
-
-<button class="tab" data-view="predictions">⚡ Prediksi BG OPET</button>
+<button class="tab tab-live active" data-view="live">Live Score</button>
+<button class="tab tab-match" data-view="today">Match Day</button>
+<button class="tab tab-website" data-view="upcoming">Website168</button>
+<button class="tab tab-pred" data-view="predictions">⚡ Prediksi BG OPET</button>
 </nav>
 </div>
 </header>
