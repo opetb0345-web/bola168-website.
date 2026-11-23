@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
       if (ids.length !== 2 || !ids.every(x => /^\d+$/.test(x))) {
         return res.status(400).json({ error: "Format H2H tidak valid." });
       }
-      const body = await requestBody("fixtures", { h2h: q.h2h, last: 10 });
+      const body = await requestBody("fixtures", { h2h: q.h2h, last: 5 });
       return res.status(200).json(body);
     }
 
