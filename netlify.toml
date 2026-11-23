@@ -3,10 +3,6 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/api/football"
-  to = "/.netlify/functions/football"
-  status = 200
-[[redirects]]
   from = "/api/predictions"
   to = "/.netlify/functions/prediction-gallery"
   status = 200
