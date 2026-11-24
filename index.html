@@ -261,7 +261,7 @@ main{padding:0 13px;margin:17px auto}
 <div class="card-title">⚡ PREDIKSI BG OPET</div>
 <p class="muted">Prediksi pertandingan yang diposting secara online.</p>
 <div id="predictionOnlineList"><div class="empty">Memuat postingan prediksi...</div></div>
-<div id="predictionComments" style="margin-top:24px;padding:16px;border:1px solid rgba(245,196,81,.35);border-radius:14px;background:rgba(5,15,30,.82)"><h3 style="margin:0 0 8px;color:var(--gold2)">💬 Komentar Pengunjung</h3><p class="muted">Silakan berbagi komentar tentang prediksi.</p><form id="predictionCommentForm"><div class="field"><label for="commentName">Nama</label><input id="commentName" maxlength="40" placeholder="Nama kamu" required></div><div class="field" style="margin-top:10px"><label for="commentText">Komentar</label><textarea id="commentText" maxlength="500" placeholder="Tulis komentar..." required></textarea></div><p><button class="btn" id="commentSend" type="submit">KIRIM KOMENTAR</button></p></form><div id="commentList"><div class="empty">Memuat komentar...</div></div></div>
+
 </section>
 
 <section class="card" id="h2hCard">
@@ -424,22 +424,42 @@ async function searchH2H(){
     $('h2hResults').innerHTML=`<div class="empty error">Gagal mengambil H2H: ${safe(e.message)}<br>Periksa kuota API-Football.</div>`;
   }
 }
-async function loadPredictionComments(){
-  const list=$('commentList');
+async function loadImageComments(galleryId){
+  const list=$('imageCommentList');
+  if(!list)return;
+  list.innerHTML='<div class="empty">Memuat komentar...</div>';
   try{
-    const {data,error}=await supabaseClient.from('bola168_comments').select('id,name,comment,created_at').order('created_at',{ascending:false}).limit(100);
-    if(error) throw error;
-    if(!data?.length){list.innerHTML='<div class="empty">Belum ada komentar. Jadilah yang pertama!</div>';return;}
+    const {data,error}=await supabaseClient.from('bola168_image_comments')
+      .select('id,name,comment,created_at').eq('gallery_id',String(galleryId))
+      .order('created_at',{ascending:false}).limit(100);
+    if(error)throw error;
+    if(!data?.length){list.innerHTML='<div class="empty">Belum ada komentar untuk prediksi ini.</div>';return;}
     list.innerHTML=data.map(x=>`<article style="padding:12px 4px;border-bottom:1px solid rgba(166,190,220,.2)"><strong>${safe(x.name)}</strong><div style="white-space:pre-wrap;overflow-wrap:anywhere">${safe(x.comment)}</div><small class="muted">${safe(new Date(x.created_at).toLocaleString('id-ID'))}</small></article>`).join('');
-  }catch(e){list.innerHTML='<div class="empty error">Komentar belum tersedia. Perlu mengaktifkan tabel komentar.</div>';}
+  }catch(e){
+    list.innerHTML='<div class="empty error">Komentar belum aktif. Admin perlu membuat tabel komentar gambar di Supabase.</div>';
+  }
 }
-$('predictionCommentForm').addEventListener('submit',async event=>{
-  event.preventDefault();const name=$('commentName').value.trim(),comment=$('commentText').value.trim();if(!name||!comment)return;
-  const button=$('commentSend');button.disabled=true;button.textContent='Mengirim...';
-  try{const {error}=await supabaseClient.from('bola168_comments').insert({name,comment});if(error)throw error;$('commentText').value='';await loadPredictionComments();}
-  catch(e){alert('Komentar gagal dikirim. Tabel komentar mungkin belum dibuat.');}
-  finally{button.disabled=false;button.textContent='KIRIM KOMENTAR';}
-});
+async function submitImageComment(event){
+  event.preventDefault();
+  const form=event.target;
+  const galleryId=form.dataset.galleryId;
+  const name=form.querySelector('[name="commentName"]').value.trim();
+  const comment=form.querySelector('[name="commentText"]').value.trim();
+  if(!galleryId||!name||!comment)return;
+  const button=form.querySelector('button[type="submit"]');
+  button.disabled=true;button.textContent='Mengirim...';
+  try{
+    const {error}=await supabaseClient.from('bola168_image_comments')
+      .insert({gallery_id:String(galleryId),name,comment});
+    if(error)throw error;
+    form.querySelector('[name="commentText"]').value='';
+    await loadImageComments(galleryId);
+  }catch(e){
+    alert('Komentar gagal dikirim. Pastikan tabel komentar gambar sudah dibuat di Supabase.');
+  }finally{
+    button.disabled=false;button.textContent='KIRIM KOMENTAR';
+  }
+}
 async function showPredictions(){
   const target=$('predictionOnlineList');
   target.innerHTML='<div class="empty">Memuat postingan prediksi...</div>';
@@ -454,6 +474,15 @@ async function showPredictions(){
       <div class="muted" style="color:#7dd3fc;font-weight:900;letter-spacing:1px">✦ UPLOAD TERBARU</div>
       <img src="${safe(imageUrl(featured))}" alt="Prediksi BG OPET terbaru" loading="lazy">
       <h3>${safe(featured.caption)}</h3><div class="muted">📅 Tanggal upload: ${safe(new Date(featured.created_at).toLocaleString('id-ID', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}))}</div>
+      <div class="image-comments" style="margin-top:18px;padding:15px;border:1px solid rgba(56,189,248,.38);border-radius:12px;background:rgba(3,12,27,.88)">
+        <h3 style="margin:0 0 8px;color:#7dd3fc">💬 Komentar untuk prediksi terbaru</h3>
+        <form id="imageCommentForm" data-gallery-id="${safe(featured.id)}">
+          <div class="field"><label for="imageCommentName">Nama</label><input id="imageCommentName" name="commentName" maxlength="40" placeholder="Nama kamu" required></div>
+          <div class="field" style="margin-top:10px"><label for="imageCommentText">Komentar</label><textarea id="imageCommentText" name="commentText" maxlength="500" placeholder="Tulis komentar tentang prediksi ini..." required></textarea></div>
+          <p><button class="btn" type="submit">KIRIM KOMENTAR</button></p>
+        </form>
+        <div id="imageCommentList"><div class="empty">Memuat komentar...</div></div>
+      </div>
     </article>`;
     const older=data.slice(1);
     const olderHtml=older.length?`<div style="margin-top:22px">
@@ -464,8 +493,9 @@ async function showPredictions(){
       </article>`).join('')}</div>
     </div>`:'';
     target.innerHTML=featuredHtml+olderHtml;
+    $('imageCommentForm')?.addEventListener('submit',submitImageComment);
+    await loadImageComments(featured.id);
   }catch(error){target.innerHTML='<div class="empty error">Gagal memuat postingan: '+safe(error.message)+'</div>';}
-  loadPredictionComments();
 }
 let bigMatchPredictionsLoaded = false;
 let bigMatchPredictionsLoading = false;
