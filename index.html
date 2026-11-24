@@ -453,14 +453,14 @@ async function showPredictions(){
     const featuredHtml=`<article class="prediction online-prediction featured-upload">
       <div class="muted" style="color:#7dd3fc;font-weight:900;letter-spacing:1px">✦ UPLOAD TERBARU</div>
       <img src="${safe(imageUrl(featured))}" alt="Prediksi BG OPET terbaru" loading="lazy">
-      <h3>${safe(featured.caption)}</h3><div class="muted">${safe(new Date(featured.created_at).toLocaleString('id-ID'))}</div>
+      <h3>${safe(featured.caption)}</h3><div class="muted">📅 Tanggal upload: ${safe(new Date(featured.created_at).toLocaleString('id-ID', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}))}</div>
     </article>`;
     const older=data.slice(1);
     const olderHtml=older.length?`<div style="margin-top:22px">
       <div class="card-title" style="font-size:14px;color:#f5d27b">ARSIP PREDIKSI SEBELUMNYA</div>
       <div class="older-uploads">${older.map(item=>`<article class="older-upload">
         <img src="${safe(imageUrl(item))}" alt="Arsip prediksi BG OPET" loading="lazy">
-        <h3>${safe(item.caption)}</h3><div class="muted">${safe(new Date(item.created_at).toLocaleDateString('id-ID'))}</div>
+        <h3>${safe(item.caption)}</h3><div class="muted">📅 Tanggal upload: ${safe(new Date(item.created_at).toLocaleString('id-ID', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}))}</div>
       </article>`).join('')}</div>
     </div>`:'';
     target.innerHTML=featuredHtml+olderHtml;
