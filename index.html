@@ -73,7 +73,7 @@ main{max-width:1160px;margin:26px auto;padding:0 20px}
 .social-facebook{color:#93c5fd;background:linear-gradient(135deg,#1d4ed8,#082f6b);box-shadow:0 0 9px #3b82f688,0 0 20px #3b82f655}
 .social-facebook:hover{box-shadow:0 0 12px #3b82f6,0 0 28px #3b82f6aa}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.bigmatch-head,.bigmatch-row{display:grid;grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);gap:10px;align-items:center}.bigmatch-head{margin-bottom:10px;text-align:center;color:#9bdcff;font-weight:1000;letter-spacing:2px}.bigmatch-list{display:grid;gap:12px;margin-top:18px}.bigmatch-team{min-width:0;padding:10px;border:1px solid rgba(56,189,248,.48);border-radius:15px;background:linear-gradient(145deg,rgba(10,42,76,.96),rgba(5,19,39,.98));box-shadow:0 0 18px rgba(56,189,248,.12)}.bigmatch-team input{width:100%;padding:14px;border:1px solid #39749a;border-radius:10px;background:#06152a;color:#fff;font:700 16px Arial,sans-serif;outline:none}.bigmatch-team input:focus{border-color:#38bdf8;box-shadow:0 0 12px #38bdf855}.bigmatch-vs{text-align:center;color:#f5c451;font-weight:1000;font-size:15px;text-shadow:0 0 10px #f5c45188}.bigmatch-note{text-align:center;margin-top:14px;color:#9fb2ca;font-size:12px}
+.bigmatch-head,.bigmatch-row{display:grid;grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);gap:10px;align-items:center}.bigmatch-head{margin-bottom:10px;text-align:center;color:#9bdcff;font-weight:1000;letter-spacing:2px}.bigmatch-list{display:grid;gap:12px;margin-top:18px}.bigmatch-team{min-width:0;padding:10px;border:1px solid rgba(56,189,248,.48);border-radius:15px;background:linear-gradient(145deg,rgba(10,42,76,.96),rgba(5,19,39,.98));box-shadow:0 0 18px rgba(56,189,248,.12)}.bigmatch-crest{display:block;width:54px;height:54px;object-fit:contain;margin:0 auto 8px;filter:drop-shadow(0 0 8px rgba(56,189,248,.3))}.bigmatch-team input{width:100%;padding:14px;border:1px solid #39749a;border-radius:10px;background:#06152a;color:#fff;font:700 16px Arial,sans-serif;outline:none}.bigmatch-team input:focus{border-color:#38bdf8;box-shadow:0 0 12px #38bdf855}.bigmatch-vs{text-align:center;color:#f5c451;font-weight:1000;font-size:15px;text-shadow:0 0 10px #f5c45188}.bigmatch-note{text-align:center;margin-top:14px;color:#9fb2ca;font-size:12px}
 .field label{display:block;color:#d9e5f5;font-size:12px;font-weight:700;margin-bottom:5px}
 .field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #365174;border-radius:9px;background:#07172e;color:#fff;font:inherit}
 .field textarea{min-height:76px;resize:vertical}
@@ -87,7 +87,7 @@ main{max-width:1160px;margin:26px auto;padding:0 20px}
 .footer{text-align:center;color:#8395ae;font-size:12px;padding:28px 10px 38px}
 [hidden]{display:none!important}
 @media(max-width:650px){.brand-logo-orbit{width:90px;height:90px}.brand-opet-logo{width:74px;height:74px}
-.bigmatch-row{grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr);gap:6px}.bigmatch-team{padding:8px}.bigmatch-team input{padding:11px 7px;font-size:13px}.bigmatch-head{font-size:12px}.bigmatch-vs{font-size:12px}
+.bigmatch-row{grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr);gap:6px}.bigmatch-team{padding:8px}.bigmatch-team input{padding:11px 7px;font-size:13px}.bigmatch-crest{width:42px;height:42px;margin-bottom:6px}.bigmatch-head{font-size:12px}.bigmatch-vs{font-size:12px}
 .wrap{padding:12px 14px}
 main{padding:0 13px;margin:17px auto}
 .hero{min-height:270px;background-position:62% center}
@@ -157,46 +157,88 @@ main{padding:0 13px;margin:17px auto}
 
 <section class="card" id="bigMatchCard" hidden>
 <div class="card-title">🔥 BIG MATCH</div>
-<p class="muted">Isi nama 7 pertandingan pilihan. HOME dan AWAY ditampilkan sebagai judul kolom.</p>
+<p class="muted">7 pertandingan pilihan BG OPET. Nama tim bisa kamu ubah langsung pada kolom input; logo klub tampil di atas nama tim.</p>
 <div class="bigmatch-head"><span>HOME</span><span></span><span>AWAY</span></div>
 <div class="bigmatch-list">
   <div class="bigmatch-row">
-    <div class="bigmatch-team"><input id="bigMatchHome1" type="text" maxlength="60" aria-label="Tim HOME pertandingan 1" placeholder="Nama tim HOME"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/42.png" alt="Logo Arsenal" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchHome1" type="text" maxlength="60" aria-label="Tim HOME pertandingan 1" value="Arsenal" placeholder="Nama tim HOME">
+    </div>
     <div class="bigmatch-vs">VS</div>
-    <div class="bigmatch-team"><input id="bigMatchAway1" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 1" placeholder="Nama tim AWAY"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/165.png" alt="Logo Borussia Dortmund" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchAway1" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 1" value="Borussia Dortmund" placeholder="Nama tim AWAY">
+    </div>
   </div>
   <div class="bigmatch-row">
-    <div class="bigmatch-team"><input id="bigMatchHome2" type="text" maxlength="60" aria-label="Tim HOME pertandingan 2" placeholder="Nama tim HOME"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/50.png" alt="Logo Manchester City" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchHome2" type="text" maxlength="60" aria-label="Tim HOME pertandingan 2" value="Manchester City" placeholder="Nama tim HOME">
+    </div>
     <div class="bigmatch-vs">VS</div>
-    <div class="bigmatch-team"><input id="bigMatchAway2" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 2" placeholder="Nama tim AWAY"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/492.png" alt="Logo Napoli" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchAway2" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 2" value="Napoli" placeholder="Nama tim AWAY">
+    </div>
   </div>
   <div class="bigmatch-row">
-    <div class="bigmatch-team"><input id="bigMatchHome3" type="text" maxlength="60" aria-label="Tim HOME pertandingan 3" placeholder="Nama tim HOME"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/327.png" alt="Logo Bodo Glimt" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchHome3" type="text" maxlength="60" aria-label="Tim HOME pertandingan 3" value="Bodo Glimt" placeholder="Nama tim HOME">
+    </div>
     <div class="bigmatch-vs">VS</div>
-    <div class="bigmatch-team"><input id="bigMatchAway3" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 3" placeholder="Nama tim AWAY"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/755.png" alt="Logo LASK Linz" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchAway3" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 3" value="LASK Linz" placeholder="Nama tim AWAY">
+    </div>
   </div>
   <div class="bigmatch-row">
-    <div class="bigmatch-team"><input id="bigMatchHome4" type="text" maxlength="60" aria-label="Tim HOME pertandingan 4" placeholder="Nama tim HOME"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/541.png" alt="Logo Real Madrid" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchHome4" type="text" maxlength="60" aria-label="Tim HOME pertandingan 4" value="Real Madrid" placeholder="Nama tim HOME">
+    </div>
     <div class="bigmatch-vs">VS</div>
-    <div class="bigmatch-team"><input id="bigMatchAway4" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 4" placeholder="Nama tim AWAY"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/197.png" alt="Logo PSV Eindhoven" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchAway4" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 4" value="PSV Eindhoven" placeholder="Nama tim AWAY">
+    </div>
   </div>
   <div class="bigmatch-row">
-    <div class="bigmatch-team"><input id="bigMatchHome5" type="text" maxlength="60" aria-label="Tim HOME pertandingan 5" placeholder="Nama tim HOME"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/560.png" alt="Logo Slovan Bratislava" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchHome5" type="text" maxlength="60" aria-label="Tim HOME pertandingan 5" value="Slovan Bratislava" placeholder="Nama tim HOME">
+    </div>
     <div class="bigmatch-vs">VS</div>
-    <div class="bigmatch-team"><input id="bigMatchAway5" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 5" placeholder="Nama tim AWAY"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/543.png" alt="Logo Real Betis" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchAway5" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 5" value="Real Betis" placeholder="Nama tim AWAY">
+    </div>
   </div>
   <div class="bigmatch-row">
-    <div class="bigmatch-team"><input id="bigMatchHome6" type="text" maxlength="60" aria-label="Tim HOME pertandingan 6" placeholder="Nama tim HOME"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/895.png" alt="Logo Como" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchHome6" type="text" maxlength="60" aria-label="Tim HOME pertandingan 6" value="Como" placeholder="Nama tim HOME">
+    </div>
     <div class="bigmatch-vs">VS</div>
-    <div class="bigmatch-team"><input id="bigMatchAway6" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 6" placeholder="Nama tim AWAY"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/553.png" alt="Logo AEK Athens" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchAway6" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 6" value="AEK Athens" placeholder="Nama tim AWAY">
+    </div>
   </div>
   <div class="bigmatch-row">
-    <div class="bigmatch-team"><input id="bigMatchHome7" type="text" maxlength="60" aria-label="Tim HOME pertandingan 7" placeholder="Nama tim HOME"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/209.png" alt="Logo Feyenoord" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchHome7" type="text" maxlength="60" aria-label="Tim HOME pertandingan 7" value="Feyenoord" placeholder="Nama tim HOME">
+    </div>
     <div class="bigmatch-vs">VS</div>
-    <div class="bigmatch-team"><input id="bigMatchAway7" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 7" placeholder="Nama tim AWAY"></div>
+    <div class="bigmatch-team">
+      <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/212.png" alt="Logo Porto" loading="lazy" onerror="this.style.display='none'">
+      <input id="bigMatchAway7" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 7" value="Porto" placeholder="Nama tim AWAY">
+    </div>
   </div>
 </div>
-<div class="bigmatch-note">Big Match sementara hanya menyediakan 14 kolom input dan tidak menggunakan kuota API-Football.</div>
+<div class="bigmatch-note">Logo klub dimuat dari gambar API-Football. Big Match tidak mengambil data pertandingan atau mengurangi kuota Live Score.</div>
 </section>
 
 <section class="card" id="predictionsCard" hidden>
