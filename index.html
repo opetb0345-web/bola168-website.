@@ -455,33 +455,29 @@ function percentNumber(value){
   const number = Number(String(value ?? "").replace("%","").trim());
   return Number.isFinite(number) ? Math.max(0,Math.min(100,number)) : null;
 }
-async function loadBigMatchPredictions(force=false){
-  if(bigMatchPredictionsLoading || (bigMatchPredictionsLoaded && !force)) return;
-  bigMatchPredictionsLoading = true;
-  for(let i=1;i<=7;i++){ const target=$('bigMatchPrediction'+i); if(target) target.innerHTML='<div class="bigmatch-prediction-empty">Mengambil data statistik resmi…</div>'; }
-  try{
-    const response=await fetch('/api/football?bigmatch=1');
-    const data=await response.json();
-    if(!response.ok) throw new Error(data.error||'Gagal mengambil prediksi.');
-    (data.response||[]).forEach((item,index)=>{
-      const target=$('bigMatchPrediction'+(index+1)); if(!target) return;
-      if(!item.available){
-        const detail=item.fixture?.date ? ' Jadwal: '+new Date(item.fixture.date).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'}) : '';
-        target.innerHTML='<div class="bigmatch-prediction-empty">Prediksi belum tersedia: '+safe(item.reason||'Data fixture belum ditemukan.')+safe(detail)+'</div>'; return;
-      }
-      const home=percentNumber(item.percent?.home), draw=percentNumber(item.percent?.draw), away=percentNumber(item.percent?.away);
-      if(home===null||draw===null||away===null){target.innerHTML='<div class="bigmatch-prediction-empty">Persentase belum tersedia dari API-Football.</div>';return;}
-      const date=item.fixture?.date ? new Date(item.fixture.date).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'}) : 'Jadwal belum tersedia';
-      const homeName=item.teams?.home?.name||'HOME', awayName=item.teams?.away?.name||'AWAY';
-      target.innerHTML='<div class="bigmatch-prediction-title"><span>📊 PREDIKSI STATISTIK</span><span>'+safe(item.league?.name||'API-Football')+'</span></div>'+
-        '<div class="bigmatch-prob-labels"><span style="color:#4ade80">'+home+'% '+safe(homeName)+'</span><span style="color:#d1d5db">'+draw+'% SERI</span><span style="color:#60a5fa">'+away+'% '+safe(awayName)+'</span></div>'+
-        '<div class="bigmatch-prob-bar" role="img" aria-label="Probabilitas '+home+'% kandang, '+draw+'% seri, '+away+'% tandang"><span class="bigmatch-prob-home" style="width:'+home+'%"></span><span class="bigmatch-prob-draw" style="width:'+draw+'%"></span><span class="bigmatch-prob-away" style="width:'+away+'%"></span></div>'+
-        '<div class="bigmatch-prediction-meta">'+safe(date)+' • Fixture #'+safe(item.fixture?.id||'')+'</div>';
-    });
-    bigMatchPredictionsLoaded=true;
-  }catch(error){
-    for(let i=1;i<=7;i++){const target=$('bigMatchPrediction'+i);if(target)target.innerHTML='<div class="bigmatch-prediction-empty">Gagal memuat prediksi: '+safe(error.message)+'</div>';}
-  }finally{bigMatchPredictionsLoading=false;}
+function loadBigMatchPredictions(force=false){
+  if(bigMatchPredictionsLoaded && !force) return;
+  const estimates = [
+    {home:65,draw:19,away:16},
+    {home:76,draw:13,away:11},
+    {home:52,draw:24,away:24},
+    {home:77,draw:12,away:11},
+    {home:10,draw:14,away:76},
+    {home:73,draw:17,away:10},
+    {home:37,draw:25,away:38}
+  ];
+  estimates.forEach((item,index)=>{
+    const target=$('bigMatchPrediction'+(index+1));
+    if(!target) return;
+    const homeName=$('bigMatchHome'+(index+1))?.value?.trim()||'HOME';
+    const awayName=$('bigMatchAway'+(index+1))?.value?.trim()||'AWAY';
+    const home=item.home, draw=item.draw, away=item.away;
+    target.innerHTML='<div class="bigmatch-prediction-title"><span>📊 ESTIMASI PREDIKSI</span><span>ANALISIS STATISTIK</span></div>'+
+      '<div class="bigmatch-prob-labels"><span style="color:#4ade80">'+home+'% '+safe(homeName)+'</span><span style="color:#d1d5db">'+draw+'% SERI</span><span style="color:#60a5fa">'+away+'% '+safe(awayName)+'</span></div>'+
+      '<div class="bigmatch-prob-bar" role="img" aria-label="Estimasi probabilitas '+home+'% kandang, '+draw+'% seri, '+away+'% tandang"><span class="bigmatch-prob-home" style="width:'+home+'%"></span><span class="bigmatch-prob-draw" style="width:'+draw+'%"></span><span class="bigmatch-prob-away" style="width:'+away+'%"></span></div>'+
+      '<div class="bigmatch-prediction-meta">Estimasi pra-pertandingan • bukan hasil pasti</div>';
+  });
+  bigMatchPredictionsLoaded=true;
 }
 
 function switchView(next){
@@ -494,7 +490,7 @@ function switchView(next){
   $('predictionsCard').hidden=!isPred;
   $('refresh').hidden=isPred||isBigMatch;
   if(isPred){$('sectionTitle').textContent='Prediksi BG OPET';$('updated').textContent='';showPredictions();}
-  else if(isBigMatch){$('updated').textContent='Prediksi statistik API-Football';loadBigMatchPredictions();}
+  else if(isBigMatch){$('updated').textContent='Estimasi statistik manual • tanpa API';loadBigMatchPredictions();}
   else{$('sectionTitle').textContent='Pertandingan Sedang Berlangsung';load();}
 }
 document.querySelectorAll('.tab[data-view]').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
