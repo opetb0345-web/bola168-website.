@@ -73,7 +73,7 @@ main{max-width:1160px;margin:26px auto;padding:0 20px}
 .social-facebook{color:#93c5fd;background:linear-gradient(135deg,#1d4ed8,#082f6b);box-shadow:0 0 9px #3b82f688,0 0 20px #3b82f655}
 .social-facebook:hover{box-shadow:0 0 12px #3b82f6,0 0 28px #3b82f6aa}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.bigmatch-head,.bigmatch-row{display:grid;grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);gap:10px;align-items:center}.bigmatch-head{margin-bottom:10px;text-align:center;color:#9bdcff;font-weight:1000;letter-spacing:2px}.bigmatch-list{display:grid;gap:12px;margin-top:18px}.bigmatch-team{min-width:0;padding:10px;border:1px solid rgba(56,189,248,.48);border-radius:15px;background:linear-gradient(145deg,rgba(10,42,76,.96),rgba(5,19,39,.98));box-shadow:0 0 18px rgba(56,189,248,.12)}.bigmatch-crest{display:block;width:54px;height:54px;object-fit:contain;margin:0 auto 8px;filter:drop-shadow(0 0 8px rgba(56,189,248,.3))}.bigmatch-team input{width:100%;padding:14px;border:1px solid #39749a;border-radius:10px;background:#06152a;color:#fff;font:700 16px Arial,sans-serif;outline:none}.bigmatch-team input:focus{border-color:#38bdf8;box-shadow:0 0 12px #38bdf855}.bigmatch-vs{text-align:center;color:#f5c451;font-weight:1000;font-size:15px;text-shadow:0 0 10px #f5c45188}.bigmatch-note{text-align:center;margin-top:14px;color:#9fb2ca;font-size:12px}
+.bigmatch-head,.bigmatch-row{display:grid;grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);gap:10px;align-items:center}.bigmatch-head{margin-bottom:10px;text-align:center;color:#9bdcff;font-weight:1000;letter-spacing:2px}.bigmatch-list{display:grid;gap:12px;margin-top:18px}.bigmatch-team{min-width:0;padding:10px;border:1px solid rgba(56,189,248,.48);border-radius:15px;background:linear-gradient(145deg,rgba(10,42,76,.96),rgba(5,19,39,.98));box-shadow:0 0 18px rgba(56,189,248,.12)}.bigmatch-crest{display:block;width:54px;height:54px;object-fit:contain;margin:0 auto 8px;filter:drop-shadow(0 0 8px rgba(56,189,248,.3))}.bigmatch-team input{width:100%;padding:14px;border:1px solid #39749a;border-radius:10px;background:#06152a;color:#fff;font:700 16px Arial,sans-serif;outline:none}.bigmatch-team input:focus{border-color:#38bdf8;box-shadow:0 0 12px #38bdf855}.bigmatch-vs{text-align:center;color:#f5c451;font-weight:1000;font-size:15px;text-shadow:0 0 10px #f5c45188}.bigmatch-note{text-align:center;margin-top:14px;color:#9fb2ca;font-size:12px}.bigmatch-prediction{padding:10px 12px;border:1px solid rgba(245,196,81,.25);border-radius:12px;background:linear-gradient(135deg,rgba(9,25,48,.95),rgba(15,32,55,.95));color:#dce8f7}.bigmatch-prediction-title{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;font-weight:800;color:#f5d27b}.bigmatch-prob-labels{display:flex;justify-content:space-between;gap:8px;margin:8px 0 5px;font-size:12px;font-weight:800}.bigmatch-prob-bar{display:flex;height:9px;overflow:hidden;border-radius:20px;background:#26364b;gap:2px}.bigmatch-prob-home{background:#16a34a}.bigmatch-prob-draw{background:#9ca3af}.bigmatch-prob-away{background:#3b82f6}.bigmatch-prediction-meta{margin-top:7px;font-size:11px;color:#9fb2ca}.bigmatch-prediction-empty{font-size:12px;color:#a9b8ce}
 .field label{display:block;color:#d9e5f5;font-size:12px;font-weight:700;margin-bottom:5px}
 .field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #365174;border-radius:9px;background:#07172e;color:#fff;font:inherit}
 .field textarea{min-height:76px;resize:vertical}
@@ -171,6 +171,7 @@ main{padding:0 13px;margin:17px auto}
       <input id="bigMatchAway1" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 1" value="Borussia Dortmund" placeholder="Nama tim AWAY">
     </div>
   </div>
+  <div class="bigmatch-prediction" id="bigMatchPrediction1" aria-live="polite"><div class="bigmatch-prediction-empty">Menunggu data prediksi resmi API-Football…</div></div>
   <div class="bigmatch-row">
     <div class="bigmatch-team">
       <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/50.png" alt="Logo Manchester City" loading="lazy" onerror="this.style.display='none'">
@@ -182,6 +183,7 @@ main{padding:0 13px;margin:17px auto}
       <input id="bigMatchAway2" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 2" value="Napoli" placeholder="Nama tim AWAY">
     </div>
   </div>
+  <div class="bigmatch-prediction" id="bigMatchPrediction2" aria-live="polite"><div class="bigmatch-prediction-empty">Menunggu data prediksi resmi API-Football…</div></div>
   <div class="bigmatch-row">
     <div class="bigmatch-team">
       <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/327.png" alt="Logo Bodo Glimt" loading="lazy" onerror="this.style.display='none'">
@@ -193,6 +195,7 @@ main{padding:0 13px;margin:17px auto}
       <input id="bigMatchAway3" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 3" value="LASK Linz" placeholder="Nama tim AWAY">
     </div>
   </div>
+  <div class="bigmatch-prediction" id="bigMatchPrediction3" aria-live="polite"><div class="bigmatch-prediction-empty">Menunggu data prediksi resmi API-Football…</div></div>
   <div class="bigmatch-row">
     <div class="bigmatch-team">
       <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/541.png" alt="Logo Real Madrid" loading="lazy" onerror="this.style.display='none'">
@@ -204,6 +207,7 @@ main{padding:0 13px;margin:17px auto}
       <input id="bigMatchAway4" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 4" value="PSV Eindhoven" placeholder="Nama tim AWAY">
     </div>
   </div>
+  <div class="bigmatch-prediction" id="bigMatchPrediction4" aria-live="polite"><div class="bigmatch-prediction-empty">Menunggu data prediksi resmi API-Football…</div></div>
   <div class="bigmatch-row">
     <div class="bigmatch-team">
       <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/560.png" alt="Logo Slovan Bratislava" loading="lazy" onerror="this.style.display='none'">
@@ -215,6 +219,7 @@ main{padding:0 13px;margin:17px auto}
       <input id="bigMatchAway5" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 5" value="Real Betis" placeholder="Nama tim AWAY">
     </div>
   </div>
+  <div class="bigmatch-prediction" id="bigMatchPrediction5" aria-live="polite"><div class="bigmatch-prediction-empty">Menunggu data prediksi resmi API-Football…</div></div>
   <div class="bigmatch-row">
     <div class="bigmatch-team">
       <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/895.png" alt="Logo Como" loading="lazy" onerror="this.style.display='none'">
@@ -226,6 +231,7 @@ main{padding:0 13px;margin:17px auto}
       <input id="bigMatchAway6" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 6" value="AEK Athens" placeholder="Nama tim AWAY">
     </div>
   </div>
+  <div class="bigmatch-prediction" id="bigMatchPrediction6" aria-live="polite"><div class="bigmatch-prediction-empty">Menunggu data prediksi resmi API-Football…</div></div>
   <div class="bigmatch-row">
     <div class="bigmatch-team">
       <img class="bigmatch-crest" src="https://media.api-sports.io/football/teams/209.png" alt="Logo Feyenoord" loading="lazy" onerror="this.style.display='none'">
@@ -237,8 +243,9 @@ main{padding:0 13px;margin:17px auto}
       <input id="bigMatchAway7" type="text" maxlength="60" aria-label="Tim AWAY pertandingan 7" value="Porto" placeholder="Nama tim AWAY">
     </div>
   </div>
+  <div class="bigmatch-prediction" id="bigMatchPrediction7" aria-live="polite"><div class="bigmatch-prediction-empty">Menunggu data prediksi resmi API-Football…</div></div>
 </div>
-<div class="bigmatch-note">Logo klub dimuat dari gambar API-Football. Big Match tidak mengambil data pertandingan atau mengurangi kuota Live Score.</div>
+<div class="bigmatch-note">Persentase bersumber dari Predictions API-Football berdasarkan fixture resmi. Data disimpan dalam cache 24 jam agar hemat kuota. Jika fixture atau prediksi tidak tersedia, persentase tidak akan dibuat-buat.</div>
 </section>
 
 <section class="card" id="predictionsCard" hidden>
@@ -442,6 +449,41 @@ async function showPredictions(){
   }catch(error){target.innerHTML='<div class="empty error">Gagal memuat postingan: '+safe(error.message)+'</div>';}
   loadPredictionComments();
 }
+let bigMatchPredictionsLoaded = false;
+let bigMatchPredictionsLoading = false;
+function percentNumber(value){
+  const number = Number(String(value ?? "").replace("%","").trim());
+  return Number.isFinite(number) ? Math.max(0,Math.min(100,number)) : null;
+}
+async function loadBigMatchPredictions(force=false){
+  if(bigMatchPredictionsLoading || (bigMatchPredictionsLoaded && !force)) return;
+  bigMatchPredictionsLoading = true;
+  for(let i=1;i<=7;i++){ const target=$('bigMatchPrediction'+i); if(target) target.innerHTML='<div class="bigmatch-prediction-empty">Mengambil data statistik resmi…</div>'; }
+  try{
+    const response=await fetch('/api/football?bigmatch=1');
+    const data=await response.json();
+    if(!response.ok) throw new Error(data.error||'Gagal mengambil prediksi.');
+    (data.response||[]).forEach((item,index)=>{
+      const target=$('bigMatchPrediction'+(index+1)); if(!target) return;
+      if(!item.available){
+        const detail=item.fixture?.date ? ' Jadwal: '+new Date(item.fixture.date).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'}) : '';
+        target.innerHTML='<div class="bigmatch-prediction-empty">Prediksi belum tersedia: '+safe(item.reason||'Data fixture belum ditemukan.')+safe(detail)+'</div>'; return;
+      }
+      const home=percentNumber(item.percent?.home), draw=percentNumber(item.percent?.draw), away=percentNumber(item.percent?.away);
+      if(home===null||draw===null||away===null){target.innerHTML='<div class="bigmatch-prediction-empty">Persentase belum tersedia dari API-Football.</div>';return;}
+      const date=item.fixture?.date ? new Date(item.fixture.date).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'}) : 'Jadwal belum tersedia';
+      const homeName=item.teams?.home?.name||'HOME', awayName=item.teams?.away?.name||'AWAY';
+      target.innerHTML='<div class="bigmatch-prediction-title"><span>📊 PREDIKSI STATISTIK</span><span>'+safe(item.league?.name||'API-Football')+'</span></div>'+
+        '<div class="bigmatch-prob-labels"><span style="color:#4ade80">'+home+'% '+safe(homeName)+'</span><span style="color:#d1d5db">'+draw+'% SERI</span><span style="color:#60a5fa">'+away+'% '+safe(awayName)+'</span></div>'+
+        '<div class="bigmatch-prob-bar" role="img" aria-label="Probabilitas '+home+'% kandang, '+draw+'% seri, '+away+'% tandang"><span class="bigmatch-prob-home" style="width:'+home+'%"></span><span class="bigmatch-prob-draw" style="width:'+draw+'%"></span><span class="bigmatch-prob-away" style="width:'+away+'%"></span></div>'+
+        '<div class="bigmatch-prediction-meta">'+safe(date)+' • Fixture #'+safe(item.fixture?.id||'')+'</div>';
+    });
+    bigMatchPredictionsLoaded=true;
+  }catch(error){
+    for(let i=1;i<=7;i++){const target=$('bigMatchPrediction'+i);if(target)target.innerHTML='<div class="bigmatch-prediction-empty">Gagal memuat prediksi: '+safe(error.message)+'</div>';}
+  }finally{bigMatchPredictionsLoading=false;}
+}
+
 function switchView(next){
   view=next;
   document.querySelectorAll('.tab[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===view));
@@ -452,7 +494,7 @@ function switchView(next){
   $('predictionsCard').hidden=!isPred;
   $('refresh').hidden=isPred||isBigMatch;
   if(isPred){$('sectionTitle').textContent='Prediksi BG OPET';$('updated').textContent='';showPredictions();}
-  else if(isBigMatch){$('updated').textContent='Tanpa permintaan API-Football';}
+  else if(isBigMatch){$('updated').textContent='Prediksi statistik API-Football';loadBigMatchPredictions();}
   else{$('sectionTitle').textContent='Pertandingan Sedang Berlangsung';load();}
 }
 document.querySelectorAll('.tab[data-view]').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
