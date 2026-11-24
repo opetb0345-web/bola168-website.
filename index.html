@@ -472,8 +472,8 @@ function loadBigMatchPredictions(force=false){
     const homeName=$('bigMatchHome'+(index+1))?.value?.trim()||'HOME';
     const awayName=$('bigMatchAway'+(index+1))?.value?.trim()||'AWAY';
     const home=item.home, draw=item.draw, away=item.away;
-    const probabilityColor = value => value > 50 ? '#22c55e' : value <= 20 ? '#ef4444' : '#facc15';
-    const makeLabel = (value, label) => '<div class="bigmatch-inline-prob" style="color:'+probabilityColor(value)+'">'+value+'%<small>'+label+'</small></div>';
+    const probabilityColor = (value, label) => label === 'SERI' ? '#facc15' : value > 50 ? '#22c55e' : '#ef4444';
+    const makeLabel = (value, label) => '<div class="bigmatch-inline-prob" style="color:'+probabilityColor(value,label)+'">'+value+'%<small>'+label+'</small></div>';
     const row = target.previousElementSibling;
     if(row && row.classList.contains('bigmatch-row')){
       const teams = row.querySelectorAll('.bigmatch-team');
