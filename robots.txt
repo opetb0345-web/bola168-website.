@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bola168-website.vercel.app/sitemap.xml
