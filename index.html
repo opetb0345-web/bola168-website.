@@ -106,7 +106,14 @@ main{padding:0 13px;margin:17px auto}
 #predictionsCard .online-prediction.featured-upload img{max-height:560px}
 #predictionsCard .older-uploads{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-top:12px}
 #predictionsCard .older-upload{min-width:0;padding:9px;margin:0;border:1px solid rgba(245,196,81,.2);border-radius:11px;background:rgba(4,16,35,.72)}
-#predictionsCard .older-upload img{width:100%;height:115px;object-fit:cover;margin:0 auto 7px;border-radius:8px}
+#predictionsCard .older-upload img{display:block;width:100%;height:115px;object-fit:cover;margin:0 auto 5px;border-radius:8px}
+#predictionsCard .older-image-open{display:block;width:100%;padding:0;border:0;background:transparent;color:#7dd3fc;cursor:zoom-in;text-align:center}
+#predictionsCard .older-image-open span{display:block;font-size:10px;font-weight:800;padding:3px 0 5px}
+#predictionImageLightbox{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.92)}
+#predictionImageLightbox.open{display:flex}
+#predictionImageLightbox img{max-width:min(96vw,1100px);max-height:86vh;object-fit:contain;border-radius:12px;box-shadow:0 0 28px #38bdf866}
+#predictionImageLightbox .lightbox-close{position:absolute;top:16px;right:18px;border:1px solid #7dd3fc;background:#071426;color:white;border-radius:10px;padding:9px 14px;font-size:18px;cursor:pointer}
+#predictionImageLightbox .lightbox-caption{position:absolute;bottom:12px;left:15px;right:15px;text-align:center;color:white;font-weight:800}
 #predictionsCard .older-upload h3{font-size:12px;line-height:1.35;margin:5px 0}
 #predictionsCard .older-upload .muted{font-size:10px}
 @media(max-width:520px){#predictionsCard .older-uploads{grid-template-columns:repeat(2,minmax(0,1fr))}#predictionsCard .older-upload img{height:95px}}
@@ -488,11 +495,28 @@ async function showPredictions(){
     const olderHtml=older.length?`<div style="margin-top:22px">
       <div class="card-title" style="font-size:14px;color:#f5d27b">ARSIP PREDIKSI SEBELUMNYA</div>
       <div class="older-uploads">${older.map(item=>`<article class="older-upload">
-        <img src="${safe(imageUrl(item))}" alt="Arsip prediksi BG OPET" loading="lazy">
+        <button class="older-image-open" type="button" data-image-url="${safe(imageUrl(item))}" data-image-caption="${safe(item.caption)}" aria-label="Perbesar foto prediksi">
+          <img src="${safe(imageUrl(item))}" alt="Arsip prediksi BG OPET" loading="lazy">
+          <span>🔍 Klik untuk perbesar</span>
+        </button>
         <h3>${safe(item.caption)}</h3><div class="muted">📅 Tanggal upload: ${safe(new Date(item.created_at).toLocaleString('id-ID', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}))}</div>
       </article>`).join('')}</div>
     </div>`:'';
     target.innerHTML=featuredHtml+olderHtml;
+    if(older.length){
+      const lightbox=document.createElement('div');
+      lightbox.id='predictionImageLightbox';
+      lightbox.innerHTML='<button class="lightbox-close" type="button" aria-label="Tutup">✕ TUTUP</button><img alt="Foto prediksi diperbesar"><div class="lightbox-caption"></div>';
+      document.body.appendChild(lightbox);
+      const closeLightbox=()=>{lightbox.classList.remove('open');lightbox.querySelector('img').src='';};
+      lightbox.addEventListener('click',e=>{if(e.target===lightbox||e.target.closest('.lightbox-close'))closeLightbox();});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+      target.querySelectorAll('.older-image-open').forEach(btn=>btn.addEventListener('click',()=>{
+        lightbox.querySelector('img').src=btn.dataset.imageUrl;
+        lightbox.querySelector('.lightbox-caption').textContent=btn.dataset.imageCaption||'Arsip Prediksi BG OPET';
+        lightbox.classList.add('open');
+      }));
+    }
     $('imageCommentForm')?.addEventListener('submit',submitImageComment);
     await loadImageComments(featured.id);
   }catch(error){target.innerHTML='<div class="empty error">Gagal memuat postingan: '+safe(error.message)+'</div>';}
