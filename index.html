@@ -472,8 +472,9 @@ function loadBigMatchPredictions(force=false){
     const homeName=$('bigMatchHome'+(index+1))?.value?.trim()||'HOME';
     const awayName=$('bigMatchAway'+(index+1))?.value?.trim()||'AWAY';
     const home=item.home, draw=item.draw, away=item.away;
+    const probabilityColor = value => value >= 50 ? '#4ade80' : value <= 20 ? '#f87171' : '#fbbf24';
     target.innerHTML='<div class="bigmatch-prediction-title"><span>📊 ESTIMASI PREDIKSI</span><span>ANALISIS STATISTIK</span></div>'+
-      '<div class="bigmatch-prob-labels"><span style="color:#4ade80">'+home+'% '+safe(homeName)+'</span><span style="color:#d1d5db">'+draw+'% SERI</span><span style="color:#60a5fa">'+away+'% '+safe(awayName)+'</span></div>'+
+      '<div class="bigmatch-prob-labels"><span style="color:'+probabilityColor(home)+'">'+home+'% '+safe(homeName)+'</span><span style="color:#facc15">'+draw+'% SERI</span><span style="color:'+probabilityColor(away)+'">'+away+'% '+safe(awayName)+'</span></div>'+
       '<div class="bigmatch-prob-bar" role="img" aria-label="Estimasi probabilitas '+home+'% kandang, '+draw+'% seri, '+away+'% tandang"><span class="bigmatch-prob-home" style="width:'+home+'%"></span><span class="bigmatch-prob-draw" style="width:'+draw+'%"></span><span class="bigmatch-prob-away" style="width:'+away+'%"></span></div>'+
       '<div class="bigmatch-prediction-meta">Estimasi pra-pertandingan • bukan hasil pasti</div>';
   });
