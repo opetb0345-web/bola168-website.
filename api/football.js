@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   // Cache each query type to conserve the API daily quota.
   const q = req.query || {};
-  const cacheSeconds = q.live === "all" ? 900 : q.teams ? 86400 : q.h2h ? 86400 : q.next ? 86400 : 43200;
+  const cacheSeconds = q.bigmatch === "1" ? 86400 : q.live === "all" ? 900 : q.teams ? 86400 : q.h2h ? 86400 : q.next ? 86400 : 43200;
   res.setHeader("Cache-Control", `public, s-maxage=${cacheSeconds}, stale-while-revalidate=${cacheSeconds * 2}`);
 
   const key = process.env.API_FOOTBALL_KEY;
@@ -44,6 +44,36 @@ module.exports = async (req, res) => {
       }
       const body = await requestBody("fixtures", { h2h: q.h2h, last: 5 });
       return res.status(200).json(body);
+    }
+
+    if (q.bigmatch === "1") {
+      const pairs = [
+        { home: 42, away: 165 }, { home: 50, away: 492 },
+        { home: 327, away: 755 }, { home: 541, away: 197 },
+        { home: 560, away: 543 }, { home: 895, away: 553 },
+        { home: 209, away: 212 }
+      ];
+      const fixtureLists = await Promise.all(pairs.map(pair =>
+        requestBody("fixtures", { team: pair.home, next: 20 })
+      ));
+      const results = await Promise.all(pairs.map(async (pair, index) => {
+        const fixture = (fixtureLists[index].response || []).find(item =>
+          item.teams?.home?.id === pair.home && item.teams?.away?.id === pair.away
+        );
+        if (!fixture) return { ...pair, available: false, reason: "Belum ditemukan jadwal resmi untuk pasangan ini." };
+        try {
+          const predictionBody = await requestBody("predictions", { fixture: fixture.fixture.id });
+          const prediction = predictionBody.response?.[0];
+          const percent = prediction?.predictions?.percent;
+          if (!percent?.home || !percent?.draw || !percent?.away) {
+            return { ...pair, available: false, fixture: fixture.fixture, teams: fixture.teams, league: fixture.league, reason: "Data persentase belum tersedia dari API." };
+          }
+          return { ...pair, available: true, fixture: fixture.fixture, teams: fixture.teams, league: fixture.league, percent };
+        } catch (error) {
+          return { ...pair, available: false, fixture: fixture.fixture, teams: fixture.teams, league: fixture.league, reason: "Prediksi belum tersedia dari API." };
+        }
+      }));
+      return res.status(200).json({ get: "bigmatch-predictions", results: results.length, response: results });
     }
 
     if (q.live === "all") {
