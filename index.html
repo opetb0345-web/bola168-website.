@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#07152d">
-<title>BOLA168 | Live Score, Jadwal Bola & Prediksi Sepak Bola</title>
-<meta name="description" content="BOLA168 menyajikan live score sepak bola, jadwal dan hasil pertandingan, Big Match, serta prediksi BG OPET dari berbagai liga dunia.">
+<title>SPORT168 | Live Score, Jadwal Bola & Prediksi Sepak Bola</title>
+<meta name="description" content="SPORT168 menyajikan live score sepak bola, jadwal dan hasil pertandingan, Big Match, serta prediksi BG OPET dari berbagai liga dunia.">
 <link rel="canonical" href="https://bola168-website.vercel.app/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="BOLA168 | Live Score, Jadwal Bola & Prediksi Sepak Bola">
+<meta property="og:title" content="SPORT168 | Live Score, Jadwal Bola & Prediksi Sepak Bola">
 <meta property="og:description" content="Live score sepak bola, jadwal dan hasil pertandingan, Big Match, serta prediksi BG OPET dari berbagai liga dunia.">
 <meta property="og:url" content="https://bola168-website.vercel.app/">
 <script type="application/ld+json">
@@ -20,14 +20,14 @@
       "@type": "WebSite",
       "@id": "https://bola168-website.vercel.app/#website",
       "url": "https://bola168-website.vercel.app/",
-      "name": "BOLA168",
+      "name": "SPORT168",
       "description": "Live score sepak bola, jadwal dan hasil pertandingan, Big Match, serta prediksi BG OPET.",
       "inLanguage": "id-ID"
     },
     {
       "@type": "Organization",
       "@id": "https://bola168-website.vercel.app/#organization",
-      "name": "BOLA168",
+      "name": "SPORT168",
       "url": "https://bola168-website.vercel.app/"
     }
   ]
@@ -152,10 +152,10 @@ main{padding:0 13px;margin:17px auto}
 <div class="wrap">
 <div class="brand">
 <div class="brand-left">
-<img src="/assets/bg-opet-anime-hero.jpg" class="logo-img" alt="Logo BOLA168">
+<img src="/assets/bg-opet-anime-hero.jpg" class="logo-img" alt="Logo SPORT168">
 <div>
-<h1>BOLA168</h1>
-<div class="sub">LIVE SCORE - PREDIKSI - WEBSITE GAMING - LIGA BIG MATCH</div>
+<h1>SPORT168</h1>
+<div class="sub">SPORT168 • LIVE SCORE • PREDIKSI • WEBSITE GAMING • LIGA BIG MATCH</div>
 </div>
 </div>
 <div class="brand-logo-orbit"><img src="/assets/6273991443663755145-removebg-preview.png" class="brand-opet-logo" alt="Logo BG OPET"></div>
@@ -172,7 +172,7 @@ main{padding:0 13px;margin:17px auto}
 <main>
 <section class="hero">
 <div class="hero-content">
-<div class="eyebrow">WELCOME TO BOLA168</div>
+<div class="eyebrow">WELCOME TO SPORT168</div>
 <h2>RASAKAN SERUNYA<br>SEPAK BOLA</h2>
 <p>Update skor langsung, pertandingan hari ini, jadwal sepak bola, dan prediksi pilihan BG OPET.</p>
 <button class="btn" id="refresh">↻ &nbsp; Perbarui Skor</button>
@@ -359,7 +359,7 @@ main{padding:0 13px;margin:17px auto}
 <div id="galleryList" hidden><div class="empty">Memuat galeri...</div></div>
 </section>
 
-<div class="footer">© BOLA168 • BG OPET • Data pertandingan disediakan oleh API-Football. Ketersediaan data mengikuti paket API.</div>
+<div class="footer">© SPORT168 • BG OPET • Data pertandingan disediakan oleh API-Football. Ketersediaan data mengikuti paket API.</div>
 </main>
 
 <script>
@@ -597,7 +597,7 @@ function setBigMatchInputAccess(isAdmin){
   document.querySelectorAll('#bigMatchCard .bigmatch-team input').forEach(input=>{
     input.readOnly = !isAdmin;
     input.setAttribute('aria-readonly',String(!isAdmin));
-    input.title = isAdmin ? 'Admin dapat mengubah nama tim' : 'Hanya admin BOLA168 yang dapat mengubah nama tim';
+    input.title = isAdmin ? 'Admin dapat mengubah nama tim' : 'Hanya admin SPORT168 yang dapat mengubah nama tim';
   });
 }
 
@@ -654,7 +654,7 @@ function updateGalleryAccess(user){
   $('galleryAdmin').hidden = !galleryAdminUser;
   $('galleryList').hidden = !galleryAdminUser;
   $('galleryPhotosTitle').hidden = !galleryAdminUser;
-  if(user && !galleryAdminUser) galleryMessage('Akun ini bukan admin BOLA168.', true);
+  if(user && !galleryAdminUser) galleryMessage('Akun ini bukan admin SPORT168.', true);
   if(galleryAdminUser) showGallery();
   else galleryList.innerHTML = '<div class="empty">Galeri privat. Login admin untuk melihat foto.</div>';
 }
@@ -674,7 +674,7 @@ async function adminLogin(){
     if(error) throw error;
     if(data.user?.email !== ADMIN_EMAIL){
       await supabaseClient.auth.signOut();
-      throw new Error('Akun ini bukan admin BOLA168.');
+      throw new Error('Akun ini bukan admin SPORT168.');
     }
     $('adminPassword').value = '';
     galleryMessage('Login admin berhasil.');
@@ -713,7 +713,7 @@ async function showGallery(){
   galleryList.innerHTML = data.map(item=>{
     const {data:publicData} = supabaseClient.storage.from(GALLERY_BUCKET).getPublicUrl(item.image_path);
     return `<article class="prediction">
-      <img src="${safe(publicData.publicUrl)}" alt="Foto prediksi BOLA168" loading="lazy"
+      <img src="${safe(publicData.publicUrl)}" alt="Foto prediksi SPORT168" loading="lazy"
         style="width:100%;max-height:400px;object-fit:contain;border-radius:12px;background:#030b18">
       <h3>${safe(item.caption)}</h3>
       <div class="muted">${safe(new Date(item.created_at).toLocaleString('id-ID'))}</div>
